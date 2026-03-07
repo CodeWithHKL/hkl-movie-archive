@@ -35,7 +35,7 @@ export default function MovieVault() {
   const [yearRange, setYearRange] = useState('All');
   const [myRatingRange, setMyRatingRange] = useState('All');
   const [imdbRatingRange, setImdbRatingRange] = useState('All');
-  const [sort, setSort] = useState<SortConfig>(null);
+  const [sort, setSort] = useState<SortConfig>({ key: 'title', direction: 'asc' });
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleSort = (key: keyof Movie) => {
