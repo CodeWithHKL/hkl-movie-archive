@@ -1,18 +1,19 @@
 "use client";
 import React from 'react';
-import { Film, LayoutDashboard, ExternalLink, X } from 'lucide-react';
+// Added 'Star' to imports
+import { Film, LayoutDashboard, Star, ExternalLink, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
+// 1. Updated the type definition to include 'bestpicks'
 interface SidebarProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
-  activeTab: 'movies' | 'analytics';
+  activeTab: 'movies' | 'analytics' | 'bestpicks'; 
 }
 
 export default function Sidebar({ isOpen, setIsOpen, activeTab }: SidebarProps) {
   const router = useRouter();
 
-  // Navigation and closing sidebar on mobile
   const handleNavigate = (path: string) => {
     router.push(path);
     if (window.innerWidth < 1024) {
@@ -22,7 +23,6 @@ export default function Sidebar({ isOpen, setIsOpen, activeTab }: SidebarProps) 
 
   return (
     <>
-      {/* Sidebar Container */}
       <aside 
         className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#080808] border-r border-white/5 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
@@ -36,11 +36,7 @@ export default function Sidebar({ isOpen, setIsOpen, activeTab }: SidebarProps) 
               </div>
               <span className="text-xl font-black tracking-tighter uppercase italic text-white">HKLX</span>
             </div>
-            {/* Mobile Close Button */}
-            <button 
-              onClick={() => setIsOpen(false)} 
-              className="lg:hidden text-gray-500 hover:text-white transition-colors"
-            >
+            <button onClick={() => setIsOpen(false)} className="lg:hidden text-gray-500 hover:text-white transition-colors">
               <X size={20} />
             </button>
           </div>
@@ -49,9 +45,7 @@ export default function Sidebar({ isOpen, setIsOpen, activeTab }: SidebarProps) 
             <button
               onClick={() => handleNavigate('/')}
               className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-[0.2em] transition-all ${
-                activeTab === 'movies' 
-                  ? 'bg-[#ff6b00] text-black shadow-lg shadow-[#ff6b00]/10' 
-                  : 'text-gray-500 hover:bg-white/5 hover:text-white'
+                activeTab === 'movies' ? 'bg-[#ff6b00] text-black shadow-lg shadow-[#ff6b00]/10' : 'text-gray-500 hover:bg-white/5 hover:text-white'
               }`}
             >
               <Film size={18} /> Movies
@@ -59,12 +53,20 @@ export default function Sidebar({ isOpen, setIsOpen, activeTab }: SidebarProps) 
             <button
               onClick={() => handleNavigate('/dashboard')}
               className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-[0.2em] transition-all ${
-                activeTab === 'analytics' 
-                  ? 'bg-[#ff6b00] text-black shadow-lg shadow-[#ff6b00]/10' 
-                  : 'text-gray-500 hover:bg-white/5 hover:text-white'
+                activeTab === 'analytics' ? 'bg-[#ff6b00] text-black shadow-lg shadow-[#ff6b00]/10' : 'text-gray-500 hover:bg-white/5 hover:text-white'
               }`}
             >
               <LayoutDashboard size={18} /> Analytics
+            </button>
+            
+            {/* 2. Added Best Picks button */}
+            <button
+              onClick={() => handleNavigate('/bestpicks')}
+              className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-[0.2em] transition-all ${
+                activeTab === 'bestpicks' ? 'bg-[#ff6b00] text-black shadow-lg shadow-[#ff6b00]/10' : 'text-gray-500 hover:bg-white/5 hover:text-white'
+              }`}
+            >
+              <Star size={18} /> Best Picks
             </button>
           </nav>
 
@@ -82,12 +84,8 @@ export default function Sidebar({ isOpen, setIsOpen, activeTab }: SidebarProps) 
         </div>
       </aside>
 
-      {/* Overlay for mobile: Closes sidebar when clicking outside */}
       {isOpen && (
-        <div 
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
-          onClick={() => setIsOpen(false)}
-        />
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden" onClick={() => setIsOpen(false)} />
       )}
     </>
   );
