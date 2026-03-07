@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { mockMovies } from '@/lib/data';
 import { 
   PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, 
-  XAxis, YAxis, ZAxis, Tooltip, AreaChart, Area, CartesianGrid, ScatterChart, Scatter, LabelList
+  XAxis, YAxis, Tooltip, AreaChart, Area, CartesianGrid, ScatterChart, Scatter, LabelList
 } from 'recharts';
 import Sidebar from '@/components/Sidebar';
 import { Menu } from 'lucide-react';
@@ -31,7 +31,7 @@ export default function Dashboard() {
   ];
 
   const ratingData = [...mockMovies].sort((a,b) => a.myRating - b.myRating);
-  const scatterData = mockMovies.map(m => ({ title: m.title, myRating: m.myRating, imdb: m.imdbRating }));
+  const scatterData = mockMovies.map(m => ({ title: m.title, myRating: m.myRating, imdb: m.imdbRating, genre: m.genre }));
 
   return (
     <div className="flex min-h-screen bg-[#050505] text-white">
@@ -112,13 +112,19 @@ export default function Dashboard() {
                   />
                   <Scatter name="Movies" data={scatterData}>
                     {scatterData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.myRating > entry.imdb ? '#ff6b00' : '#444'} />
+                      <Cell key={`cell-${index}`} fill={GENRE_COLORS[entry.genre] || '#ffffff'} />
                     ))}
                   </Scatter>
                 </ScatterChart>
               </ResponsiveContainer>
             </div>
-            <p className="text-[10px] text-gray-600 mt-4 uppercase tracking-widest font-bold">Orange dots: You rated higher than IMDb.</p>
+            <div className="flex flex-wrap gap-2 mt-6">
+              {Object.entries(GENRE_COLORS).map(([genre, color]) => (
+                <div key={genre} className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider" style={{ backgroundColor: color, color: '#000' }}>
+                  {genre}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </main>
