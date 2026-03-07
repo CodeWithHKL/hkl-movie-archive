@@ -12,6 +12,23 @@ type SortConfig = { key: keyof Movie; direction: 'asc' | 'desc' } | null;
 const YEAR_RANGES = ['All', '<= 1989', '1990-1999', '2000-2009', '2010-2019', '2020 =>'];
 const RATING_RANGES = ['All', '<= 5.9', '6.0 - 6.9', '7.0 - 7.9', '8.0 - 8.9', '9.0 - 10'];
 
+// Genre Color Mapping
+const getGenreColor = (genre: string) => {
+  const colors: Record<string, string> = {
+    'Sci-Fi': 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+    'Crime': 'bg-red-500/10 text-red-400 border-red-500/20',
+    'Thriller': 'bg-purple-500/10 text-purple-400 border-purple-500/20',
+    'Action': 'bg-orange-500/10 text-orange-400 border-orange-500/20',
+    'Drama': 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+    'War': 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
+    'Romance': 'bg-pink-500/10 text-pink-400 border-pink-500/20',
+    'Horror': 'bg-slate-500/10 text-slate-300 border-slate-500/20',
+    'Animation': 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
+    'History': 'bg-amber-700/10 text-amber-500 border-amber-700/20'
+  };
+  return colors[genre] || 'bg-white/5 text-gray-400 border-white/10';
+};
+
 export default function MovieVault() {
   const [search, setSearch] = useState('');
   const [genreFilter, setGenreFilter] = useState('All');
@@ -39,7 +56,7 @@ export default function MovieVault() {
   const processedMovies = useMemo(() => {
     let items = mockMovies.filter(m => {
       const matchesSearch = (m.title.toLowerCase().includes(search.toLowerCase()) || 
-                             m.director.toLowerCase().includes(search.toLowerCase()));
+                              m.director.toLowerCase().includes(search.toLowerCase()));
       return matchesSearch && 
              (genreFilter === 'All' || m.genre === genreFilter) &&
              isInRange(m.year, yearRange) &&
@@ -65,10 +82,8 @@ export default function MovieVault() {
   return (
     <div className="flex min-h-screen bg-[#050505] text-white font-sans selection:bg-[#ff6b00]">
       
-      {/* --- IMPORTED SIDEBAR COMPONENT --- */}
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} activeTab="movies" />
 
-      {/* --- MAIN CONTENT --- */}
       <main className="flex-1 lg:ml-64 p-4 md:p-8 lg:p-12 relative overflow-x-hidden">
         <div className="fixed top-[-10%] right-[-10%] w-[500px] h-[500px] bg-[#ff6b00]/5 blur-[120px] rounded-full pointer-events-none" />
 
@@ -180,7 +195,7 @@ export default function MovieVault() {
                         </td>
                         <td className="px-8 py-5 text-gray-500 font-mono text-xs">{movie.year}</td>
                         <td className="px-8 py-5">
-                          <span className="text-[9px] font-black bg-white/5 border border-white/10 text-gray-400 px-3 py-1.5 rounded-full uppercase tracking-tighter">
+                          <span className={`text-[9px] font-black border px-3 py-1.5 rounded-full uppercase tracking-tighter ${getGenreColor(movie.genre)}`}>
                             {movie.genre}
                           </span>
                         </td>
