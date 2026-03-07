@@ -195,12 +195,29 @@ export default function Dashboard() {
           </div>
 
           <div className="bg-[#080808] p-8 rounded-3xl border border-white/5 lg:col-span-2 text-center">
+            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8">Cross-Rating Cluster</h3>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                <ScatterChart margin={{ top: 20, right: 30, bottom: 40, left: 30 }}>
                   <CartesianGrid stroke="#1a1a1a" strokeDasharray="5 5" />
-                  <XAxis type="number" dataKey="imdb" name="IMDb" domain={[0, 10]} stroke="#444" fontSize={10} />
-                  <YAxis type="number" dataKey="myRating" name="My Rating" domain={[0, 10]} stroke="#444" fontSize={10} />
+                  <XAxis 
+                    type="number" 
+                    dataKey="imdb" 
+                    name="IMDb" 
+                    domain={[0, 10]} 
+                    stroke="#444" 
+                    fontSize={10}
+                    label={{ value: 'IMDb Rating', position: 'bottom', fill: '#555', fontSize: 10, dy: 10 }}
+                  />
+                  <YAxis 
+                    type="number" 
+                    dataKey="myRating" 
+                    name="My Rating" 
+                    domain={[0, 10]} 
+                    stroke="#444" 
+                    fontSize={10} 
+                    label={{ value: 'My Rating', angle: -90, position: 'insideLeft', fill: '#555', fontSize: 10, dx: -10 }}
+                  />
                   <Tooltip 
                     content={({ payload }) => {
                       if (payload && payload.length) {
