@@ -29,13 +29,22 @@ const getGenreColor = (genre: string) => {
   return colors[genre] || 'bg-white/5 text-gray-400 border-white/10';
 };
 
+// Rating Color Mapping
+const getRatingColor = (rating: number) => {
+  if (rating <= 5.9) return 'bg-red-500 text-red-500';
+  if (rating <= 6.9) return 'bg-pink-500 text-pink-500';
+  if (rating <= 7.9) return 'bg-yellow-500 text-yellow-500';
+  if (rating <= 8.9) return 'bg-lime-500 text-lime-500';
+  return 'bg-green-500 text-green-500';
+};
+
 export default function MovieVault() {
   const [search, setSearch] = useState('');
   const [genreFilter, setGenreFilter] = useState('All');
   const [yearRange, setYearRange] = useState('All');
   const [myRatingRange, setMyRatingRange] = useState('All');
   const [imdbRatingRange, setImdbRatingRange] = useState('All');
-  const [sort, setSort] = useState<SortConfig>({ key: 'title', direction: 'asc' });
+  const [sort, setSort] = useState<SortConfig>({ key: 'myRating', direction: 'desc' });
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleSort = (key: keyof Movie) => {
@@ -209,9 +218,11 @@ export default function MovieVault() {
                         <td className="px-8 py-5 max-w-[100px]">
                           <div className="flex items-center gap-2">
                             <div className="w-8 h-1 bg-white/5 rounded-full overflow-hidden">
-                              <div className="h-full bg-[#ff6b00]" style={{ width: `${movie.myRating * 10}%` }} />
+                              <div className={`h-full ${getRatingColor(movie.myRating).split(' ')[0]}`} style={{ width: `${movie.myRating * 10}%` }} />
                             </div>
-                            <span className="font-black text-[#ff6b00] text-sm truncate">{movie.myRating.toFixed(1)}</span>
+                            <span className={`font-black text-sm truncate ${getRatingColor(movie.myRating).split(' ')[1]}`}>
+                              {movie.myRating.toFixed(1)}
+                            </span>
                           </div>
                         </td>
                         <td className="px-8 py-5 max-w-[80px]">
