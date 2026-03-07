@@ -3,14 +3,14 @@ import React, { useState, useMemo } from 'react';
 import { mockMovies, Movie, GENRES } from '@/lib/data';
 import { 
   Search, ChevronUp, ChevronDown, Filter, 
-  LayoutDashboard, Star, Film, ExternalLink,
-  Menu, X, PlayCircle
+  Star, PlayCircle, Menu, X
 } from 'lucide-react';
+import Sidebar from '@/components/Sidebar';
 
 type SortConfig = { key: keyof Movie; direction: 'asc' | 'desc' } | null;
 
-const YEAR_RANGES = ['All', '<=1989', '1990-1999', '2000-2009', '2010-2019', '2020=>'];
-const RATING_RANGES = ['All', '<=5.9', '6.0-6.9', '7.0-7.9', '8.0-8.9', '9.0-10'];
+const YEAR_RANGES = ['All', '<= 1989', '1990-1999', '2000-2009', '2010-2019', '2020 =>'];
+const RATING_RANGES = ['All', '<= 5.9', '6.0 - 6.9', '7.0 - 7.9', '8.0 - 8.9', '9.0 - 10'];
 
 export default function MovieVault() {
   const [search, setSearch] = useState('');
@@ -20,14 +20,6 @@ export default function MovieVault() {
   const [imdbRatingRange, setImdbRatingRange] = useState('All');
   const [sort, setSort] = useState<SortConfig>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isSpinning, setIsSpinning] = useState(false);
-  const [activeTab, setActiveTab] = useState('movies');
-
-  const handleLogoClick = () => {
-    setIsSpinning(true);
-    window.open('https://Myportfolio.com', '_blank');
-    setTimeout(() => setIsSpinning(false), 800);
-  };
 
   const handleSort = (key: keyof Movie) => {
     setSort(prev => ({
@@ -72,46 +64,12 @@ export default function MovieVault() {
 
   return (
     <div className="flex min-h-screen bg-[#050505] text-white font-sans selection:bg-[#ff6b00]">
-      {/* --- SIDEBAR --- */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#080808] border-r border-white/5 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="flex flex-col h-full p-6">
-          <div className="flex items-center gap-3 mb-12">
-            <button 
-              onClick={handleLogoClick}
-              className={`w-10 h-10 bg-[#ff6b00] rounded-xl flex items-center justify-center font-black text-black text-xl shadow-lg shadow-[#ff6b00]/20 transition-all duration-700 ${isSpinning ? "rotate-[360deg]" : ""}`}
-            >
-              H
-            </button>
-            <span className="text-xl font-black tracking-tighter uppercase italic">Vault_</span>
-          </div>
-
-          <nav className="space-y-2 flex-1">
-            {[
-              { id: 'movies', label: 'Movies', icon: <Film size={18} /> },
-              { id: 'analytics', label: 'Analytics', icon: <LayoutDashboard size={18} /> }
-            ].map((item) => (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-[0.2em] transition-all ${activeTab === item.id ? 'bg-[#ff6b00] text-black shadow-lg shadow-[#ff6b00]/10' : 'text-gray-500 hover:bg-white/5 hover:text-white'}`}
-              >
-                {item.icon} {item.label}
-              </button>
-            ))}
-          </nav>
-
-          <div className="mt-auto pt-6 border-t border-white/5">
-            <a href="https://Myportfolio.com" target="_blank" className="flex items-center justify-between p-4 bg-white/5 rounded-2xl hover:bg-white/10 transition-all group">
-              <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 group-hover:text-white transition-colors">Portfolio</span>
-              <ExternalLink size={14} className="text-gray-600 group-hover:text-[#ff6b00]" />
-            </a>
-          </div>
-        </div>
-      </aside>
+      
+      {/* --- IMPORTED SIDEBAR COMPONENT --- */}
+      <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} activeTab="movies" />
 
       {/* --- MAIN CONTENT --- */}
       <main className="flex-1 lg:ml-64 p-4 md:p-8 lg:p-12 relative overflow-x-hidden">
-        {/* Decorative background glow */}
         <div className="fixed top-[-10%] right-[-10%] w-[500px] h-[500px] bg-[#ff6b00]/5 blur-[120px] rounded-full pointer-events-none" />
 
         <header className="flex justify-between items-center mb-12 lg:hidden">
@@ -127,22 +85,21 @@ export default function MovieVault() {
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="mb-12">
             <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-4 leading-none">
-              Cinema <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff6b00] to-orange-400">Archive</span>
+              Hkl <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff6b00] to-orange-400">Archive</span>
             </h2>
             <div className="flex items-center gap-3">
               <div className="h-px w-12 bg-[#ff6b00]"></div>
-              <p className="text-gray-500 text-xs font-bold uppercase tracking-[0.3em]">System Version 3.0.1</p>
+              <p className="text-gray-500 text-xs font-bold uppercase tracking-[0.3em]">My Favourite Movies & Series</p>
             </div>
           </div>
 
-          {/* --- FILTERS --- */}
           <div className="space-y-6 mb-10">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="relative flex-1">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#ff6b00]" />
                 <input 
                   className="w-full bg-[#080808] border border-white/5 rounded-2xl py-4 pl-12 pr-4 focus:ring-2 focus:ring-[#ff6b00]/50 outline-none transition-all placeholder:text-gray-700 text-sm"
-                  placeholder="Search title, director, or cast..."
+                  placeholder="Search title or director..."
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
@@ -152,7 +109,7 @@ export default function MovieVault() {
                   className="bg-transparent py-4 outline-none text-[10px] font-black uppercase tracking-widest cursor-pointer min-w-[140px]"
                   onChange={(e) => setGenreFilter(e.target.value)}
                 >
-                  {GENRES.map(g => <option key={g} value={g} className="bg-[#080808]">{g} Genre</option>)}
+                  {GENRES.map(g => <option key={g} value={g} className="bg-[#080808]">{g}</option>)}
                 </select>
               </div>
             </div>
@@ -178,7 +135,12 @@ export default function MovieVault() {
             </div>
           </div>
 
-          {/* --- TABLE --- */}
+          <div className="flex justify-between items-end mb-4 px-2">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">
+              Showing <span className="text-[#ff6b00]">{processedMovies.length}</span> {processedMovies.length === 1 ? 'Movie' : 'Movies'}
+            </p>
+          </div>
+
           <div className="bg-[#080808] border border-white/5 rounded-[2rem] overflow-hidden shadow-2xl">
             <div className="overflow-x-auto">
               <table className="w-full text-left">
@@ -255,14 +217,6 @@ export default function MovieVault() {
           </div>
         </div>
       </main>
-      
-      {/* Mobile Sidebar Overlay */}
-      {isSidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
     </div>
   );
 }
