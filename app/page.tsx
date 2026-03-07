@@ -183,12 +183,12 @@ export default function MovieVault() {
                 </thead>
                 <tbody className="divide-y divide-white/[0.03]">
                   {processedMovies.length > 0 ? (
-                    processedMovies.map(movie => (
+                    processedMovies.map((movie, index) => (
                       <tr key={movie.id} className="hover:bg-white/[0.01] transition-all group">
                         <td className="px-8 py-5 max-w-[240px]">
-                          <div className="flex items-center gap-3">
-                            <div className="p-2 bg-[#ff6b00]/10 rounded-lg text-[#ff6b00] opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100">
-                              <PlayCircle size={14} />
+                          <div className="flex items-center gap-4">
+                            <div className="w-6 flex justify-center font-mono text-[10px] text-gray-600 group-hover:text-[#ff6b00] transition-colors">
+                              {index + 1}
                             </div>
                             <span className="font-bold text-gray-200 text-sm truncate block" title={movie.title}>
                               {movie.title}
