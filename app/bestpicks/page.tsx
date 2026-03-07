@@ -16,9 +16,13 @@ export default function BestPicks() {
           <Menu />
         </button>
         
-        <header className="mb-16">
-          <h2 className="text-4xl font-black uppercase tracking-tighter mb-4">Best <span className="text-[#ff6b00]">Picks</span></h2>
-          <p className="text-gray-500 max-w-xl">Curated collections, manually selected by me.</p>
+        <header className="mb-16 space-y-2">
+          <h2 className="text-4xl font-black uppercase tracking-tighter">
+            Best <span className="text-[#ff6b00]">Picks</span>
+          </h2>
+          <p className="text-gray-500 max-w-xl">
+            Curated collections, manually selected by me.
+          </p>
         </header>
 
         {BEST_PICKS_COLLECTIONS.map((col, idx) => (
