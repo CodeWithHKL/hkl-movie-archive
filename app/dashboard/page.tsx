@@ -30,6 +30,7 @@ export default function Dashboard() {
     return true;
   };
 
+  // 1. FINAL FILTERED LIST (For Bottom Charts)
   const filteredMovies = useMemo(() => {
     return mockMovies.filter(m => {
       const matchGenre = selectedGenre ? m.genre === selectedGenre : true;
@@ -38,17 +39,34 @@ export default function Dashboard() {
     });
   }, [selectedGenre, selectedEra]);
 
-  const genreData = useMemo(() => Object.entries(
-    mockMovies.reduce((acc: any, m) => { acc[m.genre] = (acc[m.genre] || 0) + 1; return acc; }, {})
-  ).map(([name, value]) => ({ name, value })), []);
+  // 2. PIE CHART DATA (Calculated based on selected Era)
+  const genreData = useMemo(() => {
+    const source = selectedEra 
+      ? mockMovies.filter(m => isInEra(m.year, selectedEra)) 
+      : mockMovies;
+    
+    const counts = source.reduce((acc: any, m) => { 
+      acc[m.genre] = (acc[m.genre] || 0) + 1; 
+      return acc; 
+    }, {});
 
-  const eraData = useMemo(() => [
-    { name: '<1990', value: mockMovies.filter(m => m.year < 1990).length },
-    { name: '1990s', value: mockMovies.filter(m => m.year >= 1990 && m.year < 2000).length },
-    { name: '2000s', value: mockMovies.filter(m => m.year >= 2000 && m.year < 2010).length },
-    { name: '2010s', value: mockMovies.filter(m => m.year >= 2010 && m.year < 2020).length },
-    { name: '2020s+', value: mockMovies.filter(m => m.year >= 2020).length },
-  ], []);
+    return Object.entries(counts).map(([name, value]) => ({ name, value: value as number }));
+  }, [selectedEra]);
+
+  // 3. BAR CHART DATA (Calculated based on selected Genre)
+  const eraData = useMemo(() => {
+    const source = selectedGenre 
+      ? mockMovies.filter(m => m.genre === selectedGenre) 
+      : mockMovies;
+
+    return [
+      { name: '<1990', value: source.filter(m => m.year < 1990).length },
+      { name: '1990s', value: source.filter(m => m.year >= 1990 && m.year < 2000).length },
+      { name: '2000s', value: source.filter(m => m.year >= 2000 && m.year < 2010).length },
+      { name: '2010s', value: source.filter(m => m.year >= 2010 && m.year < 2020).length },
+      { name: '2020s+', value: source.filter(m => m.year >= 2020).length },
+    ];
+  }, [selectedGenre]);
 
   const ratingData = useMemo(() => [...filteredMovies].sort((a,b) => a.myRating - b.myRating), [filteredMovies]);
   const scatterData = useMemo(() => filteredMovies.map(m => ({ title: m.title, myRating: m.myRating, imdb: m.imdbRating, genre: m.genre })), [filteredMovies]);
@@ -68,12 +86,6 @@ export default function Dashboard() {
             <div className="flex flex-wrap items-center gap-2 text-gray-500 text-sm">
               <Filter size={14} />
               <span>{filteredMovies.length} Movies shown</span>
-              {(selectedGenre || selectedEra) && (
-                <div className="flex gap-2 ml-2">
-                  {selectedGenre && <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-[10px] font-bold uppercase">{selectedGenre}</span>}
-                  {selectedEra && <span className="px-2 py-0.5 bg-green-500/20 text-green-400 rounded text-[10px] font-bold uppercase">{selectedEra}</span>}
-                </div>
-              )}
             </div>
           </div>
           
@@ -82,7 +94,7 @@ export default function Dashboard() {
               onClick={() => { setSelectedGenre(null); setSelectedEra(null); }}
               className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#ff6b00] bg-[#ff6b00]/10 px-4 py-2 rounded-full hover:bg-[#ff6b00]/20 transition-all"
             >
-              <XCircle size={14} /> Reset All Filters
+              <XCircle size={14} /> Clear {selectedGenre && selectedEra ? 'Both' : 'Filter'}
             </button>
           )}
         </header>
@@ -90,7 +102,9 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Genre Pie */}
           <div className="bg-[#080808] p-8 rounded-3xl border border-white/5">
-            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8">Filter by Genre</h3>
+            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8 flex justify-between">
+              Genre Distribution {selectedEra && <span className="text-[#ff6b00]">in {selectedEra}</span>}
+            </h3>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -98,7 +112,6 @@ export default function Dashboard() {
                     data={genreData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}
                     onClick={(data) => setSelectedGenre(selectedGenre === data.name ? null : data.name)}
                     className="cursor-pointer outline-none"
-                    // Conditional Label Logic
                     label={({ name, percent }) => {
                       if (selectedGenre && selectedGenre !== name) return null;
                       return `${name} (${(percent * 100).toFixed(0)}%)`;
@@ -121,7 +134,9 @@ export default function Dashboard() {
 
           {/* Era Bar */}
           <div className="bg-[#080808] p-8 rounded-3xl border border-white/5">
-            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8">Filter by Era</h3>
+            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8 flex justify-between">
+              Era Breakdown {selectedGenre && <span className="text-[#ff6b00]">for {selectedGenre}</span>}
+            </h3>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={eraData}>
@@ -133,17 +148,14 @@ export default function Dashboard() {
                     onClick={(data) => setSelectedEra(selectedEra === data.name ? null : data.name)}
                     className="cursor-pointer"
                   >
-                    {/* Conditional LabelList Logic */}
                     <LabelList 
                       dataKey="value" 
                       position="top" 
-                      fill="#fff" 
-                      fontSize={11} 
-                      fontWeight="bold"
                       content={(props: any) => {
                         const { x, y, width, value, index } = props;
                         const entryName = eraData[index].name;
                         if (selectedEra && selectedEra !== entryName) return null;
+                        if (value === 0) return null; // Don't show 0 labels
                         return (
                           <text x={x + width / 2} y={y - 10} fill="#fff" fontSize={11} fontWeight="bold" textAnchor="middle">
                             {value}
@@ -164,10 +176,10 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Area Chart */}
+          {/* Detailed Charts (react to both) */}
           <div className="bg-[#080808] p-8 rounded-3xl border border-white/5 lg:col-span-2">
-            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8 italic">
-              Displaying {selectedGenre || 'All Genres'} in {selectedEra || 'All Eras'}
+            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8 italic text-center">
+              Detailed Trends: {selectedGenre || 'All Genres'} • {selectedEra || 'All Eras'}
             </h3>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
@@ -182,9 +194,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Scatter Chart */}
-          <div className="bg-[#080808] p-8 rounded-3xl border border-white/5 lg:col-span-2">
-            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8">Cross-Rating Cluster</h3>
+          <div className="bg-[#080808] p-8 rounded-3xl border border-white/5 lg:col-span-2 text-center">
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
@@ -196,7 +206,7 @@ export default function Dashboard() {
                       if (payload && payload.length) {
                         const data = payload[0].payload;
                         return (
-                          <div className="bg-black p-4 rounded-2xl border border-white/10 text-xs shadow-2xl">
+                          <div className="bg-black p-4 rounded-2xl border border-white/10 text-xs shadow-2xl text-left">
                             <p className="font-black text-white mb-2 text-sm">{data.title}</p>
                             <div className="flex justify-between gap-4">
                               <span className="text-[#ff6b00]">Me: {data.myRating}</span>
