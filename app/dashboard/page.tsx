@@ -11,7 +11,7 @@ import { Menu } from 'lucide-react';
 const GENRE_COLORS: Record<string, string> = {
   'Sci-Fi': '#60a5fa', 'Crime': '#f87171', 'Thriller': '#c084fc', 
   'Action': '#fb923c', 'Drama': '#34d399', 'War': '#facc15', 
-  'Romance': '#f472b6', 'Horror': '#94a3b8', 'Animation': '#22d3ee', 'History': '#fbbf24'
+  'Romance': '#f472b6', 'Horror': '#94a3b8', 'Animation': '#22d3ee', 'Comedy': '#ffffff', 'History': '#fbbf24'
 };
 
 export default function Dashboard() {

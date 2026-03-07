@@ -9,11 +9,11 @@ export interface Movie {
   imdbRating: number;
 }
 
-export const GENRES = ['All', 'Sci-Fi', 'Crime', 'Thriller', 'Action', 'Drama', 'War', 'Romance', 'Horror', 'Animation', 'History'];
+export const GENRES = ['All', 'Sci-Fi', 'Crime', 'Thriller', 'Action', 'Drama', 'War', 'Romance', 'Horror', 'Animation', 'Comedy', 'History'];
 
 export const mockMovies: Movie[] = [
-  { id: '1', title: '13 Hours Secret Soldiers', year: 2016, director: 'Michael Bay', genre: 'War', myRating: 0, imdbRating: 7.3 },
-  { id: '2', title: '1917', year: 2019, director: 'Sam Mendes', genre: 'War', myRating: 0, imdbRating: 8.2 },
+  { id: '1', title: '13 Hours Secret Soldiers', year: 2016, director: 'Michael Bay', genre: 'War', myRating: 8.2, imdbRating: 7.3 },
+  { id: '2', title: '1917', year: 2019, director: 'Sam Mendes', genre: 'War', myRating: 7.5, imdbRating: 8.2 },
   { id: '3', title: 'A Hidden Life', year: 2019, director: 'Terrence Malick', genre: 'Drama', myRating: 0, imdbRating: 7.4 },
   { id: '4', title: 'After We Collided', year: 2020, director: 'Roger Kumble', genre: 'Romance', myRating: 0, imdbRating: 5.0 },
   { id: '5', title: 'All Quiet On The Western Front', year: 2022, director: 'Edward Berger', genre: 'War', myRating: 0, imdbRating: 7.8 },
@@ -62,9 +62,9 @@ export const mockMovies: Movie[] = [
   { id: '48', title: 'Havoc', year: 2025, director: 'Gareth Evans', genre: 'Action', myRating: 0, imdbRating: 0 },
   { id: '49', title: 'High Council', year: 2023, director: 'N/A', genre: 'Action', myRating: 0, imdbRating: 0 },
   { id: '50', title: 'In Youth We Trust', year: 2018, director: 'N/A', genre: 'Drama', myRating: 0, imdbRating: 0 },
-  { id: '51', title: 'Inception', year: 2010, director: 'Christopher Nolan', genre: 'Sci-Fi', myRating: 0, imdbRating: 8.8 },
+  { id: '51', title: 'Inception', year: 2010, director: 'Christopher Nolan', genre: 'Sci-Fi', myRating: 10.0, imdbRating: 8.8 },
   { id: '52', title: 'Infinity War', year: 2018, director: 'Russo Brothers', genre: 'Action', myRating: 0, imdbRating: 8.4 },
-  { id: '53', title: 'Interstellar', year: 2014, director: 'Christopher Nolan', genre: 'Sci-Fi', myRating: 10, imdbRating: 8.7 },
+  { id: '53', title: 'Interstellar', year: 2014, director: 'Christopher Nolan', genre: 'Sci-Fi', myRating: 9.0, imdbRating: 8.7 },
   { id: '54', title: 'Iron Man', year: 2008, director: 'Jon Favreau', genre: 'Action', myRating: 0, imdbRating: 7.9 },
   { id: '55', title: 'John Wick', year: 2014, director: 'Chad Stahelski', genre: 'Action', myRating: 0, imdbRating: 7.4 },
   { id: '56', title: 'Joker', year: 2019, director: 'Todd Phillips', genre: 'Crime', myRating: 0, imdbRating: 8.4 },
@@ -80,7 +80,7 @@ export const mockMovies: Movie[] = [
   { id: '66', title: 'Meet Joe Black', year: 1998, director: 'Martin Brest', genre: 'Drama', myRating: 0, imdbRating: 7.2 },
   { id: '67', title: 'Mission Impossible', year: 1996, director: 'Brian De Palma', genre: 'Action', myRating: 0, imdbRating: 7.1 },
   { id: '68', title: 'MK11', year: 2019, director: 'N/A', genre: 'Action', myRating: 0, imdbRating: 0 },
-  { id: '69', title: 'Money Heist', year: 2017, director: 'Álex Pina', genre: 'Crime', myRating: 0, imdbRating: 8.2 },
+  { id: '69', title: 'Money Heist', year: 2017, director: 'Álex Pina', genre: 'Crime', myRating: 10.0, imdbRating: 8.2 },
   { id: '70', title: 'Mr & Mrs Smith', year: 2005, director: 'Doug Liman', genre: 'Action', myRating: 0, imdbRating: 6.5 },
   { id: '71', title: 'Need For Speed', year: 2014, director: 'Scott Waugh', genre: 'Action', myRating: 0, imdbRating: 6.4 },
   { id: '72', title: 'Night Comes For Us', year: 2018, director: 'Timo Tjahjanto', genre: 'Action', myRating: 0, imdbRating: 6.9 },
@@ -104,7 +104,7 @@ export const mockMovies: Movie[] = [
   { id: '90', title: 'Saving Private Ryan', year: 1998, director: 'Steven Spielberg', genre: 'War', myRating: 0, imdbRating: 8.6 },
   { id: '91', title: 'Shawshank Redemption', year: 1994, director: 'Frank Darabont', genre: 'Drama', myRating: 0, imdbRating: 9.3 },
   { id: '92', title: 'Sheriff', year: 2024, director: 'Syafiq Yusof', genre: 'Crime', myRating: 0, imdbRating: 7.8 },
-  { id: '93', title: 'Sicario', year: 2015, director: 'Denis Villeneuve', genre: 'Action', myRating: 0, imdbRating: 7.7 },
+  { id: '93', title: 'Sicario', year: 2015, director: 'Denis Villeneuve', genre: 'Action', myRating: 10.0, imdbRating: 7.7 },
   { id: '94', title: 'Silent Love', year: 2024, director: 'Eiji Uchida', genre: 'Romance', myRating: 0, imdbRating: 6.8 },
   { id: '95', title: 'Skyfall', year: 2012, director: 'Sam Mendes', genre: 'Action', myRating: 0, imdbRating: 7.8 },
   { id: '96', title: 'Sniper : Legacy', year: 2014, director: 'Don Michael Paul', genre: 'Action', myRating: 0, imdbRating: 5.3 },
@@ -115,7 +115,7 @@ export const mockMovies: Movie[] = [
   { id: '101', title: 'Suicide Squad', year: 2016, director: 'David Ayer', genre: 'Action', myRating: 0, imdbRating: 5.9 },
   { id: '102', title: 'Sunrise In Heaven', year: 2019, director: 'Waymon Boone', genre: 'Romance', myRating: 0, imdbRating: 6.2 },
   { id: '103', title: 'Takluk Lahad Datu', year: 2024, director: 'Syamsul Yusof', genre: 'Action', myRating: 0, imdbRating: 0 },
-  { id: '104', title: 'Terminator', year: 1984, director: 'James Cameron', genre: 'Sci-Fi', myRating: 0, imdbRating: 8.1 },
+  { id: '104', title: 'Terminator', year: 1984, director: 'James Cameron', genre: 'Sci-Fi', myRating: 10, imdbRating: 8.1 },
   { id: '105', title: 'Terrifier', year: 2016, director: 'Damien Leone', genre: 'Horror', myRating: 0, imdbRating: 5.6 },
   { id: '106', title: 'The Contractor', year: 2022, director: 'Tarik Saleh', genre: 'Action', myRating: 0, imdbRating: 5.8 },
   { id: '107', title: 'The Dark Knight', year: 2008, director: 'Christopher Nolan', genre: 'Action', myRating: 0, imdbRating: 9.0 },
@@ -144,7 +144,7 @@ export const mockMovies: Movie[] = [
   { id: '130', title: 'Tom Yum Goong', year: 2005, director: 'Prachya Pinkaew', genre: 'Action', myRating: 0, imdbRating: 7.1 },
   { id: '131', title: 'Top Gun', year: 1986, director: 'Tony Scott', genre: 'Action', myRating: 0, imdbRating: 6.9 },
   { id: '132', title: 'Train To Busan', year: 2016, director: 'Yeon Sang-ho', genre: 'Horror', myRating: 0, imdbRating: 7.6 },
-  { id: '133', title: 'Transformers', year: 2007, director: 'Michael Bay', genre: 'Sci-Fi', myRating: 0, imdbRating: 7.0 },
+  { id: '133', title: 'Transformers', year: 2007, director: 'Michael Bay', genre: 'Sci-Fi', myRating: 10.0, imdbRating: 7.0 },
   { id: '134', title: 'Trap', year: 2024, director: 'M. Night Shyamalan', genre: 'Thriller', myRating: 0, imdbRating: 5.9 },
   { id: '135', title: 'Tron Ares', year: 2025, director: 'Joachim Rønning', genre: 'Sci-Fi', myRating: 0, imdbRating: 0 },
   { id: '136', title: 'Tron Legacy', year: 2010, director: 'Joseph Kosinski', genre: 'Sci-Fi', myRating: 0, imdbRating: 6.8 },
