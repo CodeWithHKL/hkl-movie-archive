@@ -3,28 +3,27 @@ import React, { useState } from 'react';
 import { mockMovies } from '@/lib/data';
 import { 
   PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, 
-  XAxis, YAxis, ZAxis, Tooltip, AreaChart, Area, CartesianGrid, ScatterChart, Scatter
+  XAxis, YAxis, ZAxis, Tooltip, AreaChart, Area, CartesianGrid, ScatterChart, Scatter, LabelList
 } from 'recharts';
 import Sidebar from '@/components/Sidebar';
 import { Menu } from 'lucide-react';
 
 // Shared color mapping logic
 const GENRE_COLORS: Record<string, string> = {
-  'Sci-Fi': '#60a5fa', // blue-400
-  'Crime': '#f87171',  // red-400
-  'Thriller': '#c084fc', // purple-400
-  'Action': '#fb923c',  // orange-400
-  'Drama': '#34d399',  // emerald-400
-  'War': '#facc15',    // yellow-400
-  'Romance': '#f472b6', // pink-400
-  'Horror': '#94a3b8',  // slate-300
-  'Animation': '#22d3ee',// cyan-400
-  'History': '#fbbf24'  // amber-500
+  'Sci-Fi': '#60a5fa', 
+  'Crime': '#f87171',  
+  'Thriller': '#c084fc', 
+  'Action': '#fb923c',  
+  'Drama': '#34d399',  
+  'War': '#facc15',    
+  'Romance': '#f472b6', 
+  'Horror': '#94a3b8',  
+  'Animation': '#22d3ee',
+  'History': '#fbbf24'  
 };
 
 export default function Dashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
   const ERA_COLORS = ['#ff6b6b', '#fb923c', '#eab308', '#22c55e', '#3b82f6'];
 
   // 1. Genre Data (Pie)
@@ -41,8 +40,10 @@ export default function Dashboard() {
     { name: '20s+', value: mockMovies.filter(m => m.year >= 2020).length },
   ];
 
+  // 3. Rating Data (Area)
   const ratingData = [...mockMovies].sort((a,b) => a.myRating - b.myRating);
 
+  // 4. Scatter Data
   const scatterData = mockMovies.map(m => ({ 
     title: m.title, 
     myRating: m.myRating, 
@@ -60,13 +61,21 @@ export default function Dashboard() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           
-          {/* Genre Distribution - Color Coded */}
+          {/* Genre Distribution */}
           <div className="bg-[#080808] p-8 rounded-3xl border border-white/5">
             <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8">Genre Distribution</h3>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie data={genreData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}>
+                  <Pie 
+                    data={genreData} 
+                    dataKey="value" 
+                    nameKey="name" 
+                    cx="50%" 
+                    cy="50%" 
+                    outerRadius={80} 
+                    label={({ name, value }) => `${name}: ${value}`}
+                  >
                     {genreData.map((entry, i) => (
                       <Cell key={i} fill={GENRE_COLORS[entry.name] || '#ffffff'} />
                     ))}
@@ -84,8 +93,9 @@ export default function Dashboard() {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={eraData}>
                   <XAxis dataKey="name" stroke="#555" fontSize={10} />
-                  <Tooltip contentStyle={{backgroundColor: '#000', borderRadius: '1rem', border: 'none'}} />
+                  <Tooltip cursor={{fill: '#111'}} contentStyle={{backgroundColor: '#000', borderRadius: '1rem', border: 'none'}} />
                   <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                    <LabelList dataKey="value" position="top" fill="#666" fontSize={10} />
                     {eraData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={ERA_COLORS[index % ERA_COLORS.length]} />
                     ))}
@@ -95,7 +105,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* ... Rest of your charts (AreaChart and ScatterChart) remain the same ... */}
+          {/* Trend Chart */}
           <div className="bg-[#080808] p-8 rounded-3xl border border-white/5 lg:col-span-2">
             <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8">Personal vs. IMDb Ratings (Trend)</h3>
             <div className="h-64">
@@ -111,6 +121,7 @@ export default function Dashboard() {
             </div>
           </div>
 
+          {/* Scatter Chart */}
           <div className="bg-[#080808] p-8 rounded-3xl border border-white/5 lg:col-span-2">
             <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8">Rating Clusters (My vs IMDb)</h3>
             <div className="h-64">
