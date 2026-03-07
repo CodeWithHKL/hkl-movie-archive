@@ -34,7 +34,7 @@ export default function Sidebar({ isOpen, setIsOpen, activeTab }: SidebarProps) 
               <div className="w-10 h-10 bg-[#ff6b00] rounded-xl flex items-center justify-center font-black text-black text-xl shadow-lg shadow-[#ff6b00]/20">
                 H
               </div>
-              <span className="text-xl font-black tracking-tighter uppercase italic text-white">Vault_</span>
+              <span className="text-xl font-black tracking-tighter uppercase italic text-white">HKLX</span>
             </div>
             {/* Mobile Close Button */}
             <button 
@@ -70,7 +70,7 @@ export default function Sidebar({ isOpen, setIsOpen, activeTab }: SidebarProps) 
 
           <div className="mt-auto pt-6 border-t border-white/5">
             <a 
-              href="https://Myportfolio.com" 
+              href="https://hklxportfolio.vercel.app" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="flex items-center justify-between p-4 bg-white/5 rounded-2xl hover:bg-white/10 transition-all group"

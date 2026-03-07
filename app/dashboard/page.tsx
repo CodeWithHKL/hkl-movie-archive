@@ -38,7 +38,7 @@ export default function Dashboard() {
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} activeTab="analytics" />
       <main className="flex-1 lg:ml-64 p-8 lg:p-12">
         <button onClick={() => setIsSidebarOpen(true)} className="lg:hidden mb-8 p-2 bg-white/5 rounded-lg"><Menu /></button>
-        <h2 className="text-4xl font-black uppercase tracking-tighter mb-12">System <span className="text-[#ff6b00]">Analytics</span></h2>
+        <h2 className="text-4xl font-black uppercase tracking-tighter mb-12">List <span className="text-[#ff6b00]">Analytics</span></h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="bg-[#080808] p-8 rounded-3xl border border-white/5">
@@ -72,7 +72,7 @@ export default function Dashboard() {
           </div>
 
           <div className="bg-[#080808] p-8 rounded-3xl border border-white/5 lg:col-span-2">
-            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8">Personal vs. IMDb Ratings (Trend)</h3>
+            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8">Personal vs. IMDb Ratings</h3>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={ratingData}>
@@ -87,7 +87,7 @@ export default function Dashboard() {
           </div>
 
           <div className="bg-[#080808] p-8 rounded-3xl border border-white/5 lg:col-span-2">
-            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8">Rating Clusters (My vs IMDb)</h3>
+            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8">Rating Clusters</h3>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <ScatterChart margin={{ top: 10, right: 10, bottom: 10, left: 10 }}>
