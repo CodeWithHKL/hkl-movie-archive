@@ -172,7 +172,7 @@ export default function MovieVault() {
                       <th 
                         key={col.key}
                         onClick={() => handleSort(col.key as keyof Movie)}
-                        className="px-8 py-6 cursor-pointer hover:text-white transition-colors group"
+                        className="px-8 py-6 cursor-pointer hover:text-white transition-colors group whitespace-nowrap"
                       >
                         <div className="flex items-center gap-2">
                           {col.label} <SortIcon col={col.key as keyof Movie} />
@@ -185,31 +185,37 @@ export default function MovieVault() {
                   {processedMovies.length > 0 ? (
                     processedMovies.map(movie => (
                       <tr key={movie.id} className="hover:bg-white/[0.01] transition-all group">
-                        <td className="px-8 py-5">
+                        <td className="px-8 py-5 max-w-[240px]">
                           <div className="flex items-center gap-3">
                             <div className="p-2 bg-[#ff6b00]/10 rounded-lg text-[#ff6b00] opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100">
                               <PlayCircle size={14} />
                             </div>
-                            <span className="font-bold text-gray-200 text-sm">{movie.title}</span>
+                            <span className="font-bold text-gray-200 text-sm truncate block" title={movie.title}>
+                              {movie.title}
+                            </span>
                           </div>
                         </td>
-                        <td className="px-8 py-5 text-gray-500 font-mono text-xs">{movie.year}</td>
-                        <td className="px-8 py-5">
-                          <span className={`text-[9px] font-black border px-3 py-1.5 rounded-full uppercase tracking-tighter ${getGenreColor(movie.genre)}`}>
+                        <td className="px-8 py-5 text-gray-500 font-mono text-xs max-w-[80px] truncate" title={String(movie.year)}>
+                          {movie.year}
+                        </td>
+                        <td className="px-8 py-5 min-w-[120px]">
+                          <span className={`text-[9px] font-black border px-3 py-1.5 rounded-full uppercase tracking-tighter inline-block ${getGenreColor(movie.genre)}`}>
                             {movie.genre}
                           </span>
                         </td>
-                        <td className="px-8 py-5 text-gray-400 text-sm font-light italic">{movie.director}</td>
-                        <td className="px-8 py-5">
+                        <td className="px-8 py-5 text-gray-400 text-sm font-light italic max-w-[150px] truncate" title={movie.director}>
+                          {movie.director}
+                        </td>
+                        <td className="px-8 py-5 max-w-[100px]">
                           <div className="flex items-center gap-2">
                             <div className="w-8 h-1 bg-white/5 rounded-full overflow-hidden">
                               <div className="h-full bg-[#ff6b00]" style={{ width: `${movie.myRating * 10}%` }} />
                             </div>
-                            <span className="font-black text-[#ff6b00] text-sm">{movie.myRating.toFixed(1)}</span>
+                            <span className="font-black text-[#ff6b00] text-sm truncate">{movie.myRating.toFixed(1)}</span>
                           </div>
                         </td>
-                        <td className="px-8 py-5">
-                           <div className="flex items-center gap-2 text-gray-500 text-sm">
+                        <td className="px-8 py-5 max-w-[80px]">
+                           <div className="flex items-center gap-2 text-gray-500 text-sm truncate" title={movie.imdbRating.toFixed(1)}>
                              <Star size={12} className="text-yellow-500/40 fill-yellow-500/10" />
                              {movie.imdbRating.toFixed(1)}
                            </div>
