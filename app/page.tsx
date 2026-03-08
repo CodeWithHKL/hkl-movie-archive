@@ -24,6 +24,7 @@ const getGenreColor = (genre: string) => {
     'Romance': 'bg-pink-500/10 text-pink-400 border-pink-500/20',
     'Horror': 'bg-slate-500/10 text-slate-300 border-slate-500/20',
     'Animation': 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
+    'Comedy': 'bg-white text-slate-500 border-slate-200',
     'History': 'bg-amber-700/10 text-amber-500 border-amber-700/20'
   };
   return colors[genre] || 'bg-white/5 text-gray-400 border-white/10';
