@@ -180,7 +180,7 @@ export const mockMovies: Movie[] = [
   { id: '166', title: 'Iron Man 2', year: 2010, director: 'Jon Favreau', genre: 'Sci-Fi', myRating: 0, imdbRating: 6.9 },
   { id: '167', title: 'Iron Man 3', year: 2013, director: 'Shane Black', genre: 'Sci-Fi', myRating: 0, imdbRating: 7.1 },
   { id: '168', title: 'John Wick: Chapter 2', year: 2017, director: 'Chad Stahelski', genre: 'Action', myRating: 0, imdbRating: 7.4 },
-  { id: '169', title: 'John Wick: Chapter 3: Parabellum', year: 2019, director: 'Chad Stahelski', genre: 'Action', myRating: 0, imdbRating: 7.4 },
+  { id: '169', title: 'John Wick: Chapter 3 - Parabellum', year: 2019, director: 'Chad Stahelski', genre: 'Action', myRating: 0, imdbRating: 7.4 },
   { id: '170', title: 'John Wick: Chapter 4', year: 2023, director: 'Chad Stahelski', genre: 'Action', myRating: 0, imdbRating: 7.7 },
   { id: '171', title: 'Jurassic World Dominion', year: 2022, director: 'Colin Trevorrow', genre: 'Sci-Fi', myRating: 0, imdbRating: 5.6 },
   { id: '172', title: 'Jurassic World Rebirth', year: 2025, director: 'Gareth Edwards', genre: 'Sci-Fi', myRating: 0, imdbRating: 5.8 },
@@ -217,5 +217,7 @@ export const mockMovies: Movie[] = [
   { id: '203', title: 'Se7en', year: 1995, director: 'David Fincher', genre: 'Crime', myRating: 0, imdbRating: 8.6 },
   { id: '204', title: 'Grave of the Fireflies', year: 1988, director: 'Isao Takahata', genre: 'War', myRating: 0, imdbRating: 8.5 },
   { id: '205', title: 'Requiem for a Dream', year: 2000, director: 'Darren Aronofsky', genre: 'Crime', myRating: 0, imdbRating: 8.3 },
-  { id: '206', title: 'Baby Driver', year: 2017, director: 'Edgar Wright', genre: 'Action', myRating: 0, imdbRating: 7.5 }
+  { id: '206', title: 'Baby Driver', year: 2017, director: 'Edgar Wright', genre: 'Action', myRating: 0, imdbRating: 7.5 },
+  { id: '207', title: 'One Battle After Another', year: 2025, director: 'Zhang Yimou', genre: 'Thriller', myRating: 0, imdbRating: 7.1 },
+  { id: '208', title: 'Unfriended: Dark Web', year: 2018, director: 'Stephen Susco', genre: 'Horror', myRating: 0, imdbRating: 6.0 }
 ];
