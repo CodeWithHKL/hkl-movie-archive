@@ -100,7 +100,7 @@ export default function MovieVault() {
         <header className="flex justify-between items-center mb-12 lg:hidden">
           <div className="flex items-center gap-3">
              <div className="w-8 h-8 bg-[#ff6b00] rounded-lg flex items-center justify-center font-black text-black text-sm">H</div>
-             <span className="font-black uppercase tracking-tighter italic">Vault_</span>
+             <span className="font-black uppercase tracking-tighter italic">HKLX</span>
           </div>
           <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 bg-white/5 rounded-lg">
             {isSidebarOpen ? <X /> : <Menu />}

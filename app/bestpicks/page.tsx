@@ -1,24 +1,27 @@
 "use client";
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { BEST_PICKS_COLLECTIONS } from '@/lib/collections';
 import Sidebar from '@/components/Sidebar';
 import { Menu, Star, Zap, Eye, BookOpen, Heart, Award } from 'lucide-react';
 
 // Simple helper to give each section a unique icon and color theme
+// Added 'hex' property to handle dynamic hover colors accurately
 const getSectionTheme = (index: number) => {
   const themes = [
-    { color: 'text-[#ff6b00]', border: 'hover:border-[#ff6b00]/50', icon: <Award className="w-5 h-5" /> },
-    { color: 'text-blue-500', border: 'hover:border-blue-500/50', icon: <Zap className="w-5 h-5" /> },
-    { color: 'text-purple-500', border: 'hover:border-purple-500/50', icon: <Eye className="w-5 h-5" /> },
-    { color: 'text-emerald-500', border: 'hover:border-emerald-500/50', icon: <BookOpen className="w-5 h-5" /> },
-    { color: 'text-red-500', border: 'hover:border-red-500/50', icon: <Heart className="w-5 h-5" /> },
-    { color: 'text-amber-400', border: 'hover:border-amber-400/50', icon: <Star className="w-5 h-5" /> },
+    { color: 'text-[#ff6b00]', hex: '#ff6b00', border: 'hover:border-[#ff6b00]/50', icon: <Award className="w-5 h-5" /> },
+    { color: 'text-blue-500', hex: '#3b82f6', border: 'hover:border-blue-500/50', icon: <Zap className="w-5 h-5" /> },
+    { color: 'text-purple-500', hex: '#a855f7', border: 'hover:border-purple-500/50', icon: <Eye className="w-5 h-5" /> },
+    { color: 'text-emerald-500', hex: '#10b981', border: 'hover:border-emerald-500/50', icon: <BookOpen className="w-5 h-5" /> },
+    { color: 'text-red-500', hex: '#ef4444', border: 'hover:border-red-500/50', icon: <Heart className="w-5 h-5" /> },
+    { color: 'text-amber-400', hex: '#fbbf24', border: 'hover:border-amber-400/50', icon: <Star className="w-5 h-5" /> },
   ];
   return themes[index % themes.length];
 };
 
 export default function BestPicks() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [hoveredMovieId, setHoveredMovieId] = useState<string | number | null>(null);
 
   return (
     <div className="flex min-h-screen bg-[#050505] text-white">
@@ -34,7 +37,7 @@ export default function BestPicks() {
             Best <span className="text-[#ff6b00]">Picks</span>
           </h2>
           <p className="text-gray-500 max-w-xl">
-            Curated collections, manually selected by me.
+            My personal favorite movies & shows out of all I've ever watched.
           </p>
         </header>
 
@@ -68,12 +71,33 @@ export default function BestPicks() {
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="block group"
+                    onMouseEnter={() => setHoveredMovieId(movie.id)}
+                    onMouseLeave={() => setHoveredMovieId(null)}
                   >
                     <div className={`bg-[#080808] border border-white/5 rounded-2xl p-4 transition duration-500 ${theme.border} hover:scale-[1.02] hover:bg-white/[0.02]`}>
-                      <div className={`aspect-[2/3] bg-white/5 rounded-lg mb-4 flex items-center justify-center font-black text-white/10 transition-colors duration-500 group-hover:text-white/20 ${isFirst ? 'text-6xl' : 'text-4xl'}`}>
-                        {movie.title[0]}
+                      <div className={`aspect-[2/3] relative overflow-hidden bg-white/5 rounded-lg mb-4 flex items-center justify-center font-black text-white/10 transition-colors duration-500 group-hover:text-white/20 ${isFirst ? 'text-6xl' : 'text-4xl'}`}>
+                        {movie.poster ? (
+                          <Image
+                            src={movie.poster}
+                            alt={movie.title}
+                            fill
+                            sizes={isFirst ? "(max-width: 768px) 100vw, 25vw" : "(max-width: 768px) 50vw, 20vw"}
+                            className="object-cover transition-transform duration-500 group-hover:scale-110"
+                            priority={isFirst} // Loads first section images faster
+                          />
+                        ) : (
+                          <span className="uppercase">{movie.title[0]}</span>
+                        )}
                       </div>
-                      <h4 className="font-bold text-sm truncate mb-1 group-hover:text-[#ff6b00] transition-colors">{movie.title}</h4>
+                      
+                      {/* Fixed: uses inline style to handle dynamic colors correctly */}
+                      <h4 
+                        className="font-bold text-sm truncate mb-1 transition-colors duration-300"
+                        style={{ color: hoveredMovieId === movie.id ? theme.hex : '' }}
+                      >
+                        {movie.title}
+                      </h4>
+
                       <div className="flex justify-between items-center text-xs">
                         <span className={`${theme.color} font-black tracking-widest`}>{movie.myRating.toFixed(1)}</span>
                         <span className="text-gray-500 group-hover:text-gray-300 transition-colors">{movie.year}</span>
