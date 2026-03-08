@@ -75,9 +75,12 @@ export default function MovieVault() {
     });
 
     if (sort) {
-      items.sort((a, b) => {
-        if (a[sort.key] < b[sort.key]) return sort.direction === 'asc' ? -1 : 1;
-        if (a[sort.key] > b[sort.key]) return sort.direction === 'asc' ? 1 : -1;
+      items.sort((a: any, b: any) => {
+        const valA = a[sort.key];
+        const valB = b[sort.key];
+        
+        if (valA < valB) return sort.direction === 'asc' ? -1 : 1;
+        if (valA > valB) return sort.direction === 'asc' ? 1 : -1;
         return 0;
       });
     }
@@ -117,6 +120,7 @@ export default function MovieVault() {
               <p className="text-gray-500 text-xs font-bold uppercase tracking-[0.3em]">My Favourite Movies & Series</p>
             </div>
           </div>
+          
 
           <div className="space-y-6 mb-10">
             <div className="flex flex-col md:flex-row gap-4">

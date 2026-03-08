@@ -30,7 +30,6 @@ export default function Dashboard() {
     return true;
   };
 
-  // 1. FINAL FILTERED LIST (For Bottom Charts)
   const filteredMovies = useMemo(() => {
     return mockMovies.filter(m => {
       const matchGenre = selectedGenre ? m.genre === selectedGenre : true;
@@ -39,21 +38,19 @@ export default function Dashboard() {
     });
   }, [selectedGenre, selectedEra]);
 
-  // 2. PIE CHART DATA (Calculated based on selected Era)
   const genreData = useMemo(() => {
     const source = selectedEra 
       ? mockMovies.filter(m => isInEra(m.year, selectedEra)) 
       : mockMovies;
     
-    const counts = source.reduce((acc: any, m) => { 
+    const counts = source.reduce((acc: Record<string, number>, m) => { 
       acc[m.genre] = (acc[m.genre] || 0) + 1; 
       return acc; 
     }, {});
 
-    return Object.entries(counts).map(([name, value]) => ({ name, value: value as number }));
+    return Object.entries(counts).map(([name, value]) => ({ name, value }));
   }, [selectedEra]);
 
-  // 3. BAR CHART DATA (Calculated based on selected Genre)
   const eraData = useMemo(() => {
     const source = selectedGenre 
       ? mockMovies.filter(m => m.genre === selectedGenre) 
@@ -100,7 +97,6 @@ export default function Dashboard() {
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Genre Pie */}
           <div className="bg-[#080808] p-8 rounded-3xl border border-white/5">
             <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8 flex justify-between">
               Genre Distribution {selectedEra && <span className="text-[#ff6b00]">in {selectedEra}</span>}
@@ -110,11 +106,15 @@ export default function Dashboard() {
                 <PieChart>
                   <Pie 
                     data={genreData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}
-                    onClick={(data) => setSelectedGenre(selectedGenre === data.name ? null : data.name)}
+                    onClick={(data: any) => {
+                      const name = data?.name;
+                      if (name) setSelectedGenre(selectedGenre === name ? null : name);
+                    }}
                     className="cursor-pointer outline-none"
-                    label={({ name, percent }) => {
+                    label={(props: any) => {
+                      const { name, percent } = props;
                       if (selectedGenre && selectedGenre !== name) return null;
-                      return `${name} (${(percent * 100).toFixed(0)}%)`;
+                      return `${name ?? 'Unknown'} (${((percent ?? 0) * 100).toFixed(0)}%)`;
                     }}
                   >
                     {genreData.map((entry, i) => (
@@ -132,7 +132,6 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Era Bar */}
           <div className="bg-[#080808] p-8 rounded-3xl border border-white/5">
             <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8 flex justify-between">
               Era Breakdown {selectedGenre && <span className="text-[#ff6b00]">for {selectedGenre}</span>}
@@ -145,7 +144,10 @@ export default function Dashboard() {
                   <Bar 
                     dataKey="value" 
                     radius={[6, 6, 0, 0]} 
-                    onClick={(data) => setSelectedEra(selectedEra === data.name ? null : data.name)}
+                    onClick={(data: any) => {
+                      const name = data?.name;
+                      if (name) setSelectedEra(selectedEra === name ? null : name);
+                    }}
                     className="cursor-pointer"
                   >
                     <LabelList 
@@ -153,9 +155,9 @@ export default function Dashboard() {
                       position="top" 
                       content={(props: any) => {
                         const { x, y, width, value, index } = props;
-                        const entryName = eraData[index].name;
+                        const entryName = eraData[index]?.name;
                         if (selectedEra && selectedEra !== entryName) return null;
-                        if (value === 0) return null; // Don't show 0 labels
+                        if (!value || value === 0) return null;
                         return (
                           <text x={x + width / 2} y={y - 10} fill="#fff" fontSize={11} fontWeight="bold" textAnchor="middle">
                             {value}
@@ -176,7 +178,6 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Detailed Charts (react to both) */}
           <div className="bg-[#080808] p-8 rounded-3xl border border-white/5 lg:col-span-2">
             <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8 italic text-center">
               Detailed Trends: {selectedGenre || 'All Genres'} • {selectedEra || 'All Eras'}
@@ -201,33 +202,23 @@ export default function Dashboard() {
                 <ScatterChart margin={{ top: 20, right: 30, bottom: 40, left: 30 }}>
                   <CartesianGrid stroke="#1a1a1a" strokeDasharray="5 5" />
                   <XAxis 
-                    type="number" 
-                    dataKey="imdb" 
-                    name="IMDb" 
-                    domain={[0, 10]} 
-                    stroke="#444" 
-                    fontSize={10}
+                    type="number" dataKey="imdb" name="IMDb" domain={[0, 10]} stroke="#444" fontSize={10}
                     label={{ value: 'IMDb Rating', position: 'bottom', fill: '#555', fontSize: 10, dy: 10 }}
                   />
                   <YAxis 
-                    type="number" 
-                    dataKey="myRating" 
-                    name="My Rating" 
-                    domain={[0, 10]} 
-                    stroke="#444" 
-                    fontSize={10} 
+                    type="number" dataKey="myRating" name="My Rating" domain={[0, 10]} stroke="#444" fontSize={10}
                     label={{ value: 'My Rating', angle: -90, position: 'insideLeft', fill: '#555', fontSize: 10, dx: -10 }}
                   />
                   <Tooltip 
                     content={({ payload }) => {
-                      if (payload && payload.length) {
+                      if (payload && payload.length > 0) {
                         const data = payload[0].payload;
                         return (
                           <div className="bg-black p-4 rounded-2xl border border-white/10 text-xs shadow-2xl text-left">
-                            <p className="font-black text-white mb-2 text-sm">{data.title}</p>
+                            <p className="font-black text-white mb-2 text-sm">{data?.title}</p>
                             <div className="flex justify-between gap-4">
-                              <span className="text-[#ff6b00]">Me: {data.myRating}</span>
-                              <span className="text-gray-400">IMDb: {data.imdb}</span>
+                              <span className="text-[#ff6b00]">Me: {data?.myRating}</span>
+                              <span className="text-gray-400">IMDb: {data?.imdb}</span>
                             </div>
                           </div>
                         );
