@@ -1,107 +1,74 @@
 "use client";
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { BEST_PICKS_COLLECTIONS } from '@/lib/collections';
-import Sidebar from '@/components/Sidebar';
-import { Menu, Star, Zap, Eye, BookOpen, Heart, Award } from 'lucide-react';
-
-// Simple helper to give each section a unique icon and color theme
-// Added 'hex' property to handle dynamic hover colors accurately
-const getSectionTheme = (index: number) => {
-  const themes = [
-    { color: 'text-[#ff6b00]', hex: '#ff6b00', border: 'hover:border-[#ff6b00]/50', icon: <Award className="w-5 h-5" /> },
-    { color: 'text-blue-500', hex: '#3b82f6', border: 'hover:border-blue-500/50', icon: <Zap className="w-5 h-5" /> },
-    { color: 'text-purple-500', hex: '#a855f7', border: 'hover:border-purple-500/50', icon: <Eye className="w-5 h-5" /> },
-    { color: 'text-emerald-500', hex: '#10b981', border: 'hover:border-emerald-500/50', icon: <BookOpen className="w-5 h-5" /> },
-    { color: 'text-red-500', hex: '#ef4444', border: 'hover:border-red-500/50', icon: <Heart className="w-5 h-5" /> },
-    { color: 'text-amber-400', hex: '#fbbf24', border: 'hover:border-amber-400/50', icon: <Star className="w-5 h-5" /> },
-  ];
-  return themes[index % themes.length];
-};
+import SiteHeader from '@/components/SiteHeader';
 
 export default function BestPicks() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [hoveredMovieId, setHoveredMovieId] = useState<string | number | null>(null);
-
   return (
-    <div className="flex min-h-screen bg-[#050505] text-white">
-      <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} activeTab="bestpicks" />
-      
-      <main className="flex-1 lg:ml-64 p-8 lg:p-12">
-        <button onClick={() => setIsSidebarOpen(true)} className="lg:hidden mb-8 p-2 bg-white/5 rounded-lg">
-          <Menu />
-        </button>
-        
-        <header className="mb-16 space-y-2">
-          <h2 className="text-4xl font-black uppercase tracking-tighter">
-            Best <span className="text-[#ff6b00]">Picks</span>
-          </h2>
-          <p className="text-gray-500 max-w-xl">
-            My personal favorite movies & shows out of all I've ever watched.
+    <div className="min-h-screen bg-paper text-ink">
+      <SiteHeader />
+
+      <main className="mx-auto max-w-6xl px-5 pb-24 pt-12 md:px-8 md:pt-16">
+        <div className="mb-16 max-w-2xl">
+          <h1 className="font-serif text-5xl leading-[1.05] tracking-tight md:text-7xl">
+            Best <em className="text-accent">Picks</em>
+          </h1>
+          <p className="mt-4 text-ink-soft">
+            My favourite films and shows out of everything I&apos;ve watched, grouped by what makes them stick.
           </p>
-        </header>
+        </div>
 
         {BEST_PICKS_COLLECTIONS.map((col, idx) => {
-          const theme = getSectionTheme(idx);
           const isFirst = idx === 0;
 
           return (
             <section key={idx} className="mb-20">
-              <div className="mb-8 flex items-end justify-between border-b border-white/5 pb-4">
-                <div>
-                  <div className={`flex items-center gap-2 mb-1 ${theme.color}`}>
-                    {theme.icon}
-                    <span className="text-xs uppercase tracking-[0.2em] font-bold">Collection {idx + 1}</span>
+              <div className="mb-8 flex items-end justify-between gap-6 border-t border-ink pt-4">
+                <div className="flex items-baseline gap-4">
+                  <span className="num text-xs text-ink-faint">{String(idx + 1).padStart(2, '0')}</span>
+                  <div>
+                    <h2 className="font-serif text-3xl leading-tight">{col.title}</h2>
+                    <p className="mt-1 text-sm text-ink-soft">{col.description}</p>
                   </div>
-                  <h3 className="text-2xl font-black uppercase italic tracking-tight">{col.title}</h3>
-                  <p className="text-sm text-gray-500 mt-1">{col.description}</p>
                 </div>
-                <span className="text-xs text-white/20 font-mono">{col.movies.length} TITLES</span>
+                <span className="num hidden shrink-0 text-xs text-ink-faint sm:block">{col.movies.length} titles</span>
               </div>
-              
-              <div className={`grid gap-6 ${
-                isFirst 
-                ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-4" // Feature row: larger cards
-                : "grid-cols-2 md:grid-cols-3 lg:grid-cols-5" // Standard row
+
+              <div className={`grid gap-x-5 gap-y-8 ${
+                isFirst
+                ? "grid-cols-2 lg:grid-cols-4"
+                : "grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
               }`}>
                 {col.movies.map(movie => (
-                  <a 
-                    key={movie.id} 
+                  <a
+                    key={movie.id}
                     href={`https://www.google.com/search?q=${encodeURIComponent(`${movie.title} ${movie.year} movie`)}`}
-                    target="_blank" 
+                    target="_blank"
                     rel="noopener noreferrer"
-                    className="block group"
-                    onMouseEnter={() => setHoveredMovieId(movie.id)}
-                    onMouseLeave={() => setHoveredMovieId(null)}
+                    className="group block"
                   >
-                    <div className={`bg-[#080808] border border-white/5 rounded-2xl p-4 transition duration-500 ${theme.border} hover:scale-[1.02] hover:bg-white/[0.02]`}>
-                      <div className={`aspect-[2/3] relative overflow-hidden bg-white/5 rounded-lg mb-4 flex items-center justify-center font-black text-white/10 transition-colors duration-500 group-hover:text-white/20 ${isFirst ? 'text-6xl' : 'text-4xl'}`}>
-                        {movie.poster ? (
-                          <Image
-                            src={movie.poster}
-                            alt={movie.title}
-                            fill
-                            sizes={isFirst ? "(max-width: 768px) 100vw, 25vw" : "(max-width: 768px) 50vw, 20vw"}
-                            className="object-cover transition-transform duration-500 group-hover:scale-110"
-                            priority={isFirst} // Loads first section images faster
-                          />
-                        ) : (
-                          <span className="uppercase">{movie.title[0]}</span>
-                        )}
-                      </div>
-                      
-                      {/* Fixed: uses inline style to handle dynamic colors correctly */}
-                      <h4 
-                        className="font-bold text-sm truncate mb-1 transition-colors duration-300"
-                        style={{ color: hoveredMovieId === movie.id ? theme.hex : '' }}
-                      >
-                        {movie.title}
-                      </h4>
+                    <div className="relative mb-3 flex aspect-[2/3] items-center justify-center overflow-hidden rounded-sm bg-surface font-serif text-5xl text-ink-faint/60 ring-1 ring-rule transition-shadow duration-300 group-hover:ring-accent">
+                      {movie.poster ? (
+                        <Image
+                          src={movie.poster}
+                          alt={movie.title}
+                          fill
+                          sizes={isFirst ? "(max-width: 1024px) 50vw, 25vw" : "(max-width: 768px) 50vw, 20vw"}
+                          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                          priority={isFirst}
+                        />
+                      ) : (
+                        <span>{movie.title[0]}</span>
+                      )}
+                    </div>
 
-                      <div className="flex justify-between items-center text-xs">
-                        <span className={`${theme.color} font-black tracking-widest`}>{movie.myRating.toFixed(1)}</span>
-                        <span className="text-gray-500 group-hover:text-gray-300 transition-colors">{movie.year}</span>
-                      </div>
+                    <h3 className="truncate text-sm transition-colors group-hover:text-accent" title={movie.title}>
+                      {movie.title}
+                    </h3>
+                    <div className="num mt-0.5 flex items-baseline justify-between text-xs">
+                      <span className="text-accent">{movie.myRating.toFixed(1)}</span>
+                      <span className="text-ink-faint">{movie.year}</span>
                     </div>
                   </a>
                 ))}

@@ -1,25 +1,42 @@
 "use client";
 import React, { useState, useMemo } from 'react';
 import { mockMovies } from '@/lib/data';
-import { 
-  PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, 
+import {
+  PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar,
   XAxis, YAxis, Tooltip, AreaChart, Area, CartesianGrid, ScatterChart, Scatter, LabelList
 } from 'recharts';
-import Sidebar from '@/components/Sidebar';
-import { Menu, XCircle, Filter } from 'lucide-react';
+import SiteHeader from '@/components/SiteHeader';
+import { GENRE_COLORS } from '@/lib/theme';
+import { X } from 'lucide-react';
 
-const GENRE_COLORS: Record<string, string> = {
-  'Sci-Fi': '#60a5fa', 'Crime': '#f87171', 'Thriller': '#c084fc', 
-  'Action': '#fb923c', 'Drama': '#34d399', 'War': '#facc15', 
-  'Romance': '#f472b6', 'Horror': '#94a3b8', 'Animation': '#22d3ee', 'Comedy': '#ffffff', 'History': '#fbbf24'
+const ACCENT = '#d6a24a';
+const INK = '#ebe7dd';
+const FAINT = '#6f6c63';
+const RULE = '#2a2a26';
+
+const tooltipStyle = {
+  backgroundColor: '#161614',
+  border: `1px solid ${RULE}`,
+  borderRadius: 4,
+  color: INK,
+  fontSize: 12,
 };
 
+function Panel({ title, note, className = '', children }: { title: string; note?: string; className?: string; children: React.ReactNode }) {
+  return (
+    <section className={`border-t border-ink pt-4 ${className}`}>
+      <h2 className="mb-6 flex items-baseline justify-between gap-4">
+        <span className="font-serif text-2xl">{title}</span>
+        {note && <span className="text-xs text-accent">{note}</span>}
+      </h2>
+      {children}
+    </section>
+  );
+}
+
 export default function Dashboard() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
   const [selectedEra, setSelectedEra] = useState<string | null>(null);
-  
-  const ERA_COLORS = ['#ff6b6b', '#fb923c', '#eab308', '#22c55e', '#3b82f6'];
 
   const isInEra = (year: number, era: string) => {
     if (era === '<1990') return year < 1990;
@@ -39,21 +56,21 @@ export default function Dashboard() {
   }, [selectedGenre, selectedEra]);
 
   const genreData = useMemo(() => {
-    const source = selectedEra 
-      ? mockMovies.filter(m => isInEra(m.year, selectedEra)) 
+    const source = selectedEra
+      ? mockMovies.filter(m => isInEra(m.year, selectedEra))
       : mockMovies;
-    
-    const counts = source.reduce((acc: Record<string, number>, m) => { 
-      acc[m.genre] = (acc[m.genre] || 0) + 1; 
-      return acc; 
+
+    const counts = source.reduce((acc: Record<string, number>, m) => {
+      acc[m.genre] = (acc[m.genre] || 0) + 1;
+      return acc;
     }, {});
 
     return Object.entries(counts).map(([name, value]) => ({ name, value }));
   }, [selectedEra]);
 
   const eraData = useMemo(() => {
-    const source = selectedGenre 
-      ? mockMovies.filter(m => m.genre === selectedGenre) 
+    const source = selectedGenre
+      ? mockMovies.filter(m => m.genre === selectedGenre)
       : mockMovies;
 
     return [
@@ -69,157 +86,154 @@ export default function Dashboard() {
   const scatterData = useMemo(() => filteredMovies.map(m => ({ title: m.title, myRating: m.myRating, imdb: m.imdbRating, genre: m.genre })), [filteredMovies]);
 
   return (
-    <div className="flex min-h-screen bg-[#050505] text-white">
-      <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} activeTab="analytics" />
-      
-      <main className="flex-1 lg:ml-64 p-8 lg:p-12">
-        <button onClick={() => setIsSidebarOpen(true)} className="lg:hidden mb-8 p-2 bg-white/5 rounded-lg"><Menu /></button>
-        
-        <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <div className="space-y-2">
-            <h2 className="text-4xl font-black uppercase tracking-tighter">
-              List <span className="text-[#ff6b00]">Analytics</span>
-            </h2>
-            <div className="flex flex-wrap items-center gap-2 text-gray-500 text-sm">
-              <Filter size={14} />
-              <span>{filteredMovies.length} Movies shown</span>
-            </div>
+    <div className="min-h-screen bg-paper text-ink">
+      <SiteHeader />
+
+      <main className="mx-auto max-w-6xl px-5 pb-24 pt-12 md:px-8 md:pt-16">
+        <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h1 className="font-serif text-5xl leading-[1.05] tracking-tight md:text-7xl">
+              The <em className="text-accent">Numbers</em>
+            </h1>
+            <p className="mt-4 text-ink-soft">
+              <span className="num text-ink">{filteredMovies.length}</span> titles in view. Click a slice or bar to filter.
+            </p>
           </div>
-          
+
           {(selectedGenre || selectedEra) && (
-            <button 
+            <button
               onClick={() => { setSelectedGenre(null); setSelectedEra(null); }}
-              className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#ff6b00] bg-[#ff6b00]/10 px-4 py-2 rounded-full hover:bg-[#ff6b00]/20 transition-all"
+              className="inline-flex items-center gap-1.5 self-start rounded-full border border-rule px-3 py-1.5 text-xs text-ink-soft transition-colors hover:border-accent hover:text-ink md:self-auto"
             >
-              <XCircle size={14} /> Clear {selectedGenre && selectedEra ? 'Both' : 'Filter'}
+              <X size={12} /> Clear {selectedGenre && selectedEra ? 'both filters' : 'filter'}
             </button>
           )}
-        </header>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-[#080808] p-8 rounded-3xl border border-white/5">
-            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8 flex justify-between">
-              Genre Distribution {selectedEra && <span className="text-[#ff6b00]">in {selectedEra}</span>}
-            </h3>
-            <div className="h-64">
+        <div className="grid grid-cols-1 gap-x-12 gap-y-14 lg:grid-cols-2">
+          <Panel title="Genres" note={selectedEra ? `in ${selectedEra}` : undefined}>
+            <div className="h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie 
-                    data={genreData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}
+                  <Pie
+                    data={genreData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={52} outerRadius={88} paddingAngle={1} stroke="#0f0f0d" strokeWidth={2}
                     onClick={(data: any) => {
                       const name = data?.name;
                       if (name) setSelectedGenre(selectedGenre === name ? null : name);
                     }}
                     className="cursor-pointer outline-none"
                     label={(props: any) => {
-                      const { name, percent } = props;
+                      const { name, percent, x, y, textAnchor } = props;
                       if (selectedGenre && selectedGenre !== name) return null;
-                      return `${name ?? 'Unknown'} (${((percent ?? 0) * 100).toFixed(0)}%)`;
+                      return (
+                        <text x={x} y={y} textAnchor={textAnchor} fill={INK} fontSize={11}>
+                          {`${name ?? 'Unknown'} ${((percent ?? 0) * 100).toFixed(0)}%`}
+                        </text>
+                      );
                     }}
+                    labelLine={false}
                   >
                     {genreData.map((entry, i) => (
-                      <Cell 
-                        key={i} fill={GENRE_COLORS[entry.name] || '#ffffff'} 
-                        fillOpacity={selectedGenre ? (selectedGenre === entry.name ? 1 : 0.1) : 1}
-                        stroke={selectedGenre === entry.name ? '#fff' : 'none'}
-                        strokeWidth={2}
+                      <Cell
+                        key={i} fill={GENRE_COLORS[entry.name] || '#8c8a82'}
+                        fillOpacity={selectedGenre ? (selectedGenre === entry.name ? 1 : 0.15) : 1}
                       />
                     ))}
                   </Pie>
-                  <Tooltip contentStyle={{backgroundColor: '#000', borderRadius: '1rem', border: 'none'}} />
+                  <Tooltip contentStyle={tooltipStyle} itemStyle={{ color: INK }} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
-          </div>
+          </Panel>
 
-          <div className="bg-[#080808] p-8 rounded-3xl border border-white/5">
-            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8 flex justify-between">
-              Era Breakdown {selectedGenre && <span className="text-[#ff6b00]">for {selectedGenre}</span>}
-            </h3>
-            <div className="h-64">
+          <Panel title="Eras" note={selectedGenre ? `for ${selectedGenre}` : undefined}>
+            <div className="h-72">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={eraData}>
-                  <XAxis dataKey="name" stroke="#555" fontSize={10} axisLine={false} tickLine={false} />
-                  <Tooltip cursor={{fill: 'transparent'}} contentStyle={{backgroundColor: '#000', borderRadius: '1rem', border: 'none'}} />
-                  <Bar 
-                    dataKey="value" 
-                    radius={[6, 6, 0, 0]} 
+                <BarChart data={eraData} margin={{ top: 24 }}>
+                  <XAxis dataKey="name" stroke={FAINT} fontSize={11} axisLine={{ stroke: RULE }} tickLine={false} />
+                  <Tooltip cursor={{ fill: 'transparent' }} contentStyle={tooltipStyle} itemStyle={{ color: INK }} />
+                  <Bar
+                    dataKey="value"
+                    radius={[2, 2, 0, 0]}
                     onClick={(data: any) => {
                       const name = data?.name;
                       if (name) setSelectedEra(selectedEra === name ? null : name);
                     }}
                     className="cursor-pointer"
                   >
-                    <LabelList 
-                      dataKey="value" 
-                      position="top" 
+                    <LabelList
+                      dataKey="value"
+                      position="top"
                       content={(props: any) => {
                         const { x, y, width, value, index } = props;
                         const entryName = eraData[index]?.name;
                         if (selectedEra && selectedEra !== entryName) return null;
                         if (!value || value === 0) return null;
                         return (
-                          <text x={x + width / 2} y={y - 10} fill="#fff" fontSize={11} fontWeight="bold" textAnchor="middle">
+                          <text x={x + width / 2} y={y - 8} fill={INK} fontSize={11} textAnchor="middle">
                             {value}
                           </text>
                         );
                       }}
                     />
                     {eraData.map((entry, index) => (
-                      <Cell 
-                        key={`cell-${index}`} 
-                        fill={ERA_COLORS[index % ERA_COLORS.length]} 
-                        fillOpacity={selectedEra ? (selectedEra === entry.name ? 1 : 0.1) : 1}
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={ACCENT}
+                        fillOpacity={selectedEra ? (selectedEra === entry.name ? 1 : 0.2) : 0.85}
                       />
                     ))}
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
             </div>
-          </div>
+          </Panel>
 
-          <div className="bg-[#080808] p-8 rounded-3xl border border-white/5 lg:col-span-2">
-            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8 italic text-center">
-              Detailed Trends: {selectedGenre || 'All Genres'} • {selectedEra || 'All Eras'}
-            </h3>
+          <Panel
+            className="lg:col-span-2"
+            title="Ratings, low to high"
+            note={`${selectedGenre || 'All genres'} · ${selectedEra || 'All eras'}`}
+          >
+            <div className="mb-3 flex gap-5 text-xs text-ink-soft">
+              <span className="inline-flex items-center gap-2"><span className="h-0.5 w-4 bg-accent" /> Mine</span>
+              <span className="inline-flex items-center gap-2"><span className="h-0.5 w-4 bg-ink-faint" /> IMDb</span>
+            </div>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={ratingData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#1a1a1a" vertical={false} />
+                  <CartesianGrid stroke={RULE} vertical={false} />
                   <XAxis dataKey="title" hide />
-                  <Tooltip contentStyle={{backgroundColor: '#000', borderRadius: '1rem', border: 'none'}} />
-                  <Area type="monotone" dataKey="myRating" name="My Rating" stroke="#ff6b00" fill="#ff6b00" fillOpacity={0.15} strokeWidth={3} />
-                  <Area type="monotone" dataKey="imdbRating" name="IMDb Rating" stroke="#ffffff" fill="#ffffff" fillOpacity={0.05} />
+                  <YAxis domain={[0, 10]} stroke={FAINT} fontSize={11} axisLine={false} tickLine={false} width={28} />
+                  <Tooltip contentStyle={tooltipStyle} labelStyle={{ color: INK }} />
+                  <Area type="monotone" dataKey="imdbRating" name="IMDb" stroke={FAINT} fill={FAINT} fillOpacity={0.08} strokeWidth={1.5} />
+                  <Area type="monotone" dataKey="myRating" name="Mine" stroke={ACCENT} fill={ACCENT} fillOpacity={0.12} strokeWidth={2} />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
-          </div>
+          </Panel>
 
-          <div className="bg-[#080808] p-8 rounded-3xl border border-white/5 lg:col-span-2 text-center">
-            <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-8">Cross-Rating Cluster</h3>
+          <Panel className="lg:col-span-2" title="Mine versus IMDb">
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <ScatterChart margin={{ top: 20, right: 30, bottom: 40, left: 30 }}>
-                  <CartesianGrid stroke="#1a1a1a" strokeDasharray="5 5" />
-                  <XAxis 
-                    type="number" dataKey="imdb" name="IMDb" domain={[0, 10]} stroke="#444" fontSize={10}
-                    label={{ value: 'IMDb Rating', position: 'bottom', fill: '#555', fontSize: 10, dy: 10 }}
+                <ScatterChart margin={{ top: 10, right: 20, bottom: 30, left: 10 }}>
+                  <CartesianGrid stroke={RULE} />
+                  <XAxis
+                    type="number" dataKey="imdb" name="IMDb" domain={[0, 10]} stroke={FAINT} fontSize={11} tickLine={false}
+                    label={{ value: 'IMDb', position: 'bottom', fill: FAINT, fontSize: 11, dy: 6 }}
                   />
-                  <YAxis 
-                    type="number" dataKey="myRating" name="My Rating" domain={[0, 10]} stroke="#444" fontSize={10}
-                    label={{ value: 'My Rating', angle: -90, position: 'insideLeft', fill: '#555', fontSize: 10, dx: -10 }}
+                  <YAxis
+                    type="number" dataKey="myRating" name="Mine" domain={[0, 10]} stroke={FAINT} fontSize={11} tickLine={false}
+                    label={{ value: 'Mine', angle: -90, position: 'insideLeft', fill: FAINT, fontSize: 11 }}
                   />
-                  <Tooltip 
+                  <Tooltip
+                    cursor={{ stroke: RULE }}
                     content={({ payload }) => {
                       if (payload && payload.length > 0) {
                         const data = payload[0].payload;
                         return (
-                          <div className="bg-black p-4 rounded-2xl border border-white/10 text-xs shadow-2xl text-left">
-                            <p className="font-black text-white mb-2 text-sm">{data?.title}</p>
-                            <div className="flex justify-between gap-4">
-                              <span className="text-[#ff6b00]">Me: {data?.myRating}</span>
-                              <span className="text-gray-400">IMDb: {data?.imdb}</span>
-                            </div>
+                          <div className="rounded border border-rule bg-surface px-3 py-2 text-xs">
+                            <p className="mb-1 text-sm text-ink">{data?.title}</p>
+                            <p className="num text-ink-soft">Mine {data?.myRating} · IMDb {data?.imdb}</p>
                           </div>
                         );
                       }
@@ -228,13 +242,13 @@ export default function Dashboard() {
                   />
                   <Scatter name="Movies" data={scatterData}>
                     {scatterData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={GENRE_COLORS[entry.genre] || '#ffffff'} strokeWidth={1} stroke="#000" />
+                      <Cell key={`cell-${index}`} fill={GENRE_COLORS[entry.genre] || '#8c8a82'} fillOpacity={0.9} stroke="#0f0f0d" strokeWidth={1} />
                     ))}
                   </Scatter>
                 </ScatterChart>
               </ResponsiveContainer>
             </div>
-          </div>
+          </Panel>
         </div>
       </main>
     </div>
