@@ -13,12 +13,12 @@ export default function SiteHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="border-b border-rule">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-5 md:px-8">
-        <Link href="/" className="font-serif text-2xl leading-none tracking-tight">
-          HKL<span className="text-accent">.</span>
+    <header className="sticky top-0 z-20 border-b border-rule bg-paper/80 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-3.5 md:px-8">
+        <Link href="/" className="text-base font-semibold leading-none tracking-tight">
+          HKLX
         </Link>
-        <nav className="flex items-center gap-5 text-sm md:gap-8">
+        <nav className="flex items-center gap-1 text-sm md:gap-2">
           {LINKS.map(l => {
             const active = pathname === l.href;
             return (
@@ -26,8 +26,8 @@ export default function SiteHeader() {
                 key={l.href}
                 href={l.href}
                 aria-current={active ? 'page' : undefined}
-                className={`border-b pb-0.5 transition-colors ${
-                  active ? 'border-accent text-ink' : 'border-transparent text-ink-soft hover:text-ink'
+                className={`rounded-md px-2.5 py-1.5 transition-colors ${
+                  active ? 'bg-white/10 text-ink' : 'text-ink-soft hover:text-ink'
                 }`}
               >
                 {l.label}
@@ -35,7 +35,7 @@ export default function SiteHeader() {
             );
           })}
           <a
-            href="https://hklxportfolio.vercel.app"
+            href="https://hklx.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden items-center gap-1 text-ink-faint transition-colors hover:text-ink sm:flex"

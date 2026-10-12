@@ -9,13 +9,13 @@ import SiteHeader from '@/components/SiteHeader';
 import { GENRE_COLORS } from '@/lib/theme';
 import { X } from 'lucide-react';
 
-const ACCENT = '#d6a24a';
-const INK = '#ebe7dd';
-const FAINT = '#6f6c63';
-const RULE = '#2a2a26';
+const ACCENT = '#3291ff';
+const INK = '#ededed';
+const FAINT = '#737373';
+const RULE = '#262626';
 
 const tooltipStyle = {
-  backgroundColor: '#161614',
+  backgroundColor: '#0a0a0a',
   border: `1px solid ${RULE}`,
   borderRadius: 4,
   color: INK,
@@ -24,10 +24,10 @@ const tooltipStyle = {
 
 function Panel({ title, note, className = '', children }: { title: string; note?: string; className?: string; children: React.ReactNode }) {
   return (
-    <section className={`border-t border-ink pt-4 ${className}`}>
+    <section className={`rounded-lg border border-rule bg-surface p-6 ${className}`}>
       <h2 className="mb-6 flex items-baseline justify-between gap-4">
-        <span className="font-serif text-2xl">{title}</span>
-        {note && <span className="text-xs text-accent">{note}</span>}
+        <span className="text-base font-semibold tracking-tight">{title}</span>
+        {note && <span className="text-xs text-ink-faint">{note}</span>}
       </h2>
       {children}
     </section>
@@ -92,10 +92,10 @@ export default function Dashboard() {
       <main className="mx-auto max-w-6xl px-5 pb-24 pt-12 md:px-8 md:pt-16">
         <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
-            <h1 className="font-serif text-5xl leading-[1.05] tracking-tight md:text-7xl">
-              The <em className="text-accent">Numbers</em>
+            <h1 className="text-4xl font-semibold tracking-tighter md:text-5xl">
+              The <span className="text-ink-faint">Numbers</span>
             </h1>
-            <p className="mt-4 text-ink-soft">
+            <p className="mt-3 text-ink-soft">
               <span className="num text-ink">{filteredMovies.length}</span> titles in view. Click a slice or bar to filter.
             </p>
           </div>
@@ -103,20 +103,20 @@ export default function Dashboard() {
           {(selectedGenre || selectedEra) && (
             <button
               onClick={() => { setSelectedGenre(null); setSelectedEra(null); }}
-              className="inline-flex items-center gap-1.5 self-start rounded-full border border-rule px-3 py-1.5 text-xs text-ink-soft transition-colors hover:border-accent hover:text-ink md:self-auto"
+              className="inline-flex items-center gap-1.5 self-start rounded-md border border-rule px-3 py-1.5 text-xs text-ink-soft transition-colors hover:border-ink-faint hover:text-ink md:self-auto"
             >
               <X size={12} /> Clear {selectedGenre && selectedEra ? 'both filters' : 'filter'}
             </button>
           )}
         </div>
 
-        <div className="grid grid-cols-1 gap-x-12 gap-y-14 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <Panel title="Genres" note={selectedEra ? `in ${selectedEra}` : undefined}>
             <div className="h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
-                    data={genreData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={52} outerRadius={88} paddingAngle={1} stroke="#0f0f0d" strokeWidth={2}
+                    data={genreData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={52} outerRadius={88} paddingAngle={1} stroke="#000000" strokeWidth={2}
                     onClick={(data: any) => {
                       const name = data?.name;
                       if (name) setSelectedGenre(selectedGenre === name ? null : name);
@@ -231,7 +231,7 @@ export default function Dashboard() {
                       if (payload && payload.length > 0) {
                         const data = payload[0].payload;
                         return (
-                          <div className="rounded border border-rule bg-surface px-3 py-2 text-xs">
+                          <div className="rounded-md border border-rule bg-surface px-3 py-2 text-xs">
                             <p className="mb-1 text-sm text-ink">{data?.title}</p>
                             <p className="num text-ink-soft">Mine {data?.myRating} · IMDb {data?.imdb}</p>
                           </div>
@@ -242,7 +242,7 @@ export default function Dashboard() {
                   />
                   <Scatter name="Movies" data={scatterData}>
                     {scatterData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={GENRE_COLORS[entry.genre] || '#8c8a82'} fillOpacity={0.9} stroke="#0f0f0d" strokeWidth={1} />
+                      <Cell key={`cell-${index}`} fill={GENRE_COLORS[entry.genre] || '#8c8a82'} fillOpacity={0.9} stroke="#000000" strokeWidth={1} />
                     ))}
                   </Scatter>
                 </ScatterChart>

@@ -11,10 +11,10 @@ export default function BestPicks() {
 
       <main className="mx-auto max-w-6xl px-5 pb-24 pt-12 md:px-8 md:pt-16">
         <div className="mb-16 max-w-2xl">
-          <h1 className="font-serif text-5xl leading-[1.05] tracking-tight md:text-7xl">
-            Best <em className="text-accent">Picks</em>
+          <h1 className="text-4xl font-semibold tracking-tighter md:text-5xl">
+            Best <span className="text-ink-faint">Picks</span>
           </h1>
-          <p className="mt-4 text-ink-soft">
+          <p className="mt-3 text-ink-soft">
             My favourite films and shows out of everything I&apos;ve watched, grouped by what makes them stick.
           </p>
         </div>
@@ -24,11 +24,11 @@ export default function BestPicks() {
 
           return (
             <section key={idx} className="mb-20">
-              <div className="mb-8 flex items-end justify-between gap-6 border-t border-ink pt-4">
+              <div className="mb-6 flex items-end justify-between gap-6 border-b border-rule pb-4">
                 <div className="flex items-baseline gap-4">
                   <span className="num text-xs text-ink-faint">{String(idx + 1).padStart(2, '0')}</span>
                   <div>
-                    <h2 className="font-serif text-3xl leading-tight">{col.title}</h2>
+                    <h2 className="text-xl font-semibold tracking-tight">{col.title}</h2>
                     <p className="mt-1 text-sm text-ink-soft">{col.description}</p>
                   </div>
                 </div>
@@ -48,7 +48,7 @@ export default function BestPicks() {
                     rel="noopener noreferrer"
                     className="group block"
                   >
-                    <div className="relative mb-3 flex aspect-[2/3] items-center justify-center overflow-hidden rounded-sm bg-surface font-serif text-5xl text-ink-faint/60 ring-1 ring-rule transition-shadow duration-300 group-hover:ring-accent">
+                    <div className="relative mb-3 flex aspect-[2/3] items-center justify-center overflow-hidden rounded-lg bg-surface text-4xl font-semibold text-ink-faint/60 ring-1 ring-rule transition duration-300 group-hover:ring-ink-faint">
                       {movie.poster ? (
                         <Image
                           src={movie.poster}
@@ -63,11 +63,11 @@ export default function BestPicks() {
                       )}
                     </div>
 
-                    <h3 className="truncate text-sm transition-colors group-hover:text-accent" title={movie.title}>
+                    <h3 className="truncate text-sm font-medium" title={movie.title}>
                       {movie.title}
                     </h3>
                     <div className="num mt-0.5 flex items-baseline justify-between text-xs">
-                      <span className="text-accent">{movie.myRating.toFixed(1)}</span>
+                      <span className="text-ink">{movie.myRating.toFixed(1)}</span>
                       <span className="text-ink-faint">{movie.year}</span>
                     </div>
                   </a>

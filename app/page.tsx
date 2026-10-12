@@ -19,7 +19,7 @@ const COLUMNS: { label: string; key: keyof Movie; align?: string }[] = [
   { label: 'IMDb', key: 'imdbRating', align: 'text-right' },
 ];
 
-const selectCls = "w-full cursor-pointer border-b border-rule bg-transparent py-2 text-sm text-ink outline-none transition-colors hover:border-ink-faint focus:border-accent";
+const selectCls = "w-full cursor-pointer rounded-md border border-rule bg-surface px-3 py-2 text-sm text-ink outline-none transition-colors hover:border-ink-faint focus:border-ink-soft";
 const labelCls = "text-xs text-ink-faint";
 
 export default function MovieVault() {
@@ -80,21 +80,21 @@ export default function MovieVault() {
 
       <main className="mx-auto max-w-6xl px-5 pb-24 pt-12 md:px-8 md:pt-16">
         <div className="mb-12 max-w-2xl">
-          <h1 className="font-serif text-5xl leading-[1.05] tracking-tight md:text-7xl">
-            The <em className="text-accent">Archive</em>
+          <h1 className="text-4xl font-semibold tracking-tighter md:text-5xl">
+            HKL Movie <span className="text-ink-faint">Archive</span>
           </h1>
-          <p className="mt-4 text-ink-soft">
+          <p className="mt-3 text-ink-soft">
             A personal record of favourite films and series, rated and catalogued.
           </p>
         </div>
 
         <div className="mb-8 grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2 lg:grid-cols-6">
           <label className="sm:col-span-2 lg:col-span-2">
-            <span className={labelCls}>Search</span>
+            <span className={`${labelCls} mb-1.5 block`}>Search</span>
             <div className="relative">
-              <Search className="pointer-events-none absolute left-0 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-faint" />
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-faint" />
               <input
-                className="w-full border-b border-rule bg-transparent py-2 pl-6 text-sm text-ink outline-none transition-colors placeholder:text-ink-faint hover:border-ink-faint focus:border-accent"
+                className="w-full rounded-md border border-rule bg-surface py-2 pl-9 pr-3 text-sm text-ink outline-none transition-colors placeholder:text-ink-faint hover:border-ink-faint focus:border-ink-soft"
                 placeholder="Title or director"
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -107,7 +107,7 @@ export default function MovieVault() {
             { label: 'IMDb', options: RATING_RANGES, setter: setImdbRatingRange },
           ].map(f => (
             <label key={f.label}>
-              <span className={labelCls}>{f.label}</span>
+              <span className={`${labelCls} mb-1.5 block`}>{f.label}</span>
               <select className={selectCls} onChange={(e) => f.setter(e.target.value)}>
                 {f.options.map(opt => <option key={opt} value={opt} className="bg-surface">{opt}</option>)}
               </select>
@@ -119,14 +119,14 @@ export default function MovieVault() {
           <span className="num text-ink">{processedMovies.length}</span> {processedMovies.length === 1 ? 'title' : 'titles'}
         </p>
 
-        <div className="overflow-x-auto border-t border-ink">
+        <div className="overflow-x-auto rounded-lg border border-rule bg-surface">
           <table className="w-full text-left">
             <thead>
               <tr className="border-b border-rule text-xs text-ink-faint">
                 {COLUMNS.map((col) => (
                   <th
                     key={col.key}
-                    className={`py-3 pr-6 font-normal last:pr-0 ${col.align ?? ''}`}
+                    className={`px-4 py-3 font-medium ${col.align ?? ''}`}
                     aria-sort={sort?.key === col.key ? (sort.direction === 'asc' ? 'ascending' : 'descending') : undefined}
                   >
                     <button
@@ -142,23 +142,23 @@ export default function MovieVault() {
             <tbody>
               {processedMovies.length > 0 ? (
                 processedMovies.map((movie, index) => (
-                  <tr key={movie.id} className="border-b border-rule/70 transition-colors hover:bg-surface">
-                    <td className="max-w-[320px] py-3.5 pr-6">
+                  <tr key={movie.id} className="border-b border-rule last:border-0 transition-colors hover:bg-white/[0.03]">
+                    <td className="max-w-[320px] px-4 py-3">
                       <div className="flex items-baseline gap-4">
                         <span className="num w-7 shrink-0 text-right text-xs text-ink-faint">{index + 1}</span>
                         <span className="truncate text-sm" title={movie.title}>{movie.title}</span>
                       </div>
                     </td>
-                    <td className="num py-3.5 pr-6 text-sm text-ink-soft">{movie.year}</td>
-                    <td className="whitespace-nowrap py-3.5 pr-6 text-sm text-ink-soft">
-                      <span className="inline-flex items-center gap-2">
+                    <td className="num px-4 py-3 text-sm text-ink-soft">{movie.year}</td>
+                    <td className="whitespace-nowrap px-4 py-3 text-sm text-ink-soft">
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-rule px-2.5 py-0.5 text-xs">
                         <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: genreColor(movie.genre) }} />
                         {movie.genre}
                       </span>
                     </td>
-                    <td className="max-w-[180px] truncate py-3.5 pr-6 text-sm text-ink-soft" title={movie.director}>{movie.director}</td>
-                    <td className={`num py-3.5 pr-6 text-right text-sm ${ratingClass(movie.myRating)}`}>{movie.myRating.toFixed(1)}</td>
-                    <td className="num py-3.5 text-right text-sm text-ink-faint">{movie.imdbRating ? movie.imdbRating.toFixed(1) : '—'}</td>
+                    <td className="max-w-[180px] truncate px-4 py-3 text-sm text-ink-soft" title={movie.director}>{movie.director}</td>
+                    <td className={`num px-4 py-3 text-right text-sm ${ratingClass(movie.myRating)}`}>{movie.myRating.toFixed(1)}</td>
+                    <td className="num px-4 py-3 text-right text-sm text-ink-faint">{movie.imdbRating ? movie.imdbRating.toFixed(1) : '—'}</td>
                   </tr>
                 ))
               ) : (
