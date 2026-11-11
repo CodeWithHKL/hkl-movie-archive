@@ -23,14 +23,11 @@ export default function BestPicks() {
           const isFirst = idx === 0;
 
           return (
-            <section key={idx} className="mb-20">
-              <div className="mb-6 flex items-end justify-between gap-6 border-b border-rule pb-4">
-                <div className="flex items-baseline gap-4">
-                  <span className="num text-xs text-ink-faint">{String(idx + 1).padStart(2, '0')}</span>
-                  <div>
-                    <h2 className="text-xl font-semibold tracking-tight">{col.title}</h2>
-                    <p className="mt-1 text-sm text-ink-soft">{col.description}</p>
-                  </div>
+            <section key={idx} className="mb-20" style={{ "--c": col.color } as React.CSSProperties}>
+              <div className="mb-6 flex items-end justify-between gap-6 border-b border-[color:color-mix(in_srgb,var(--c)_35%,transparent)] pb-4">
+                <div>
+                  <h2 className="text-xl font-semibold tracking-tight">{col.title}</h2>
+                  <p className="mt-1 text-sm text-ink-soft">{col.description}</p>
                 </div>
                 <span className="num hidden shrink-0 text-xs text-ink-faint sm:block">{col.movies.length} titles</span>
               </div>
@@ -48,7 +45,7 @@ export default function BestPicks() {
                     rel="noopener noreferrer"
                     className="group block"
                   >
-                    <div className="relative mb-3 flex aspect-[2/3] items-center justify-center overflow-hidden rounded-lg bg-surface text-4xl font-semibold text-ink-faint/60 ring-1 ring-rule transition duration-300 group-hover:ring-ink-faint">
+                    <div className="relative mb-3 flex aspect-[2/3] items-center justify-center overflow-hidden rounded-lg bg-surface text-4xl font-semibold text-ink-faint/60 ring-1 ring-[color:color-mix(in_srgb,var(--c)_45%,transparent)] transition duration-300 group-hover:ring-2 group-hover:ring-[color:var(--c)]">
                       {movie.poster ? (
                         <Image
                           src={movie.poster}

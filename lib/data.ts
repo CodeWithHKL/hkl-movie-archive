@@ -228,7 +228,7 @@ export const mockMovies: Movie[] = [
   { id: '213', title: 'The Furious', year: 2025, director: 'Kenji Tanigaki', genre: 'Action', myRating: 9.0, imdbRating: 7.2 },
   { id: '214', title: 'Malaikat Malam', year: 2025, director: 'Unknown', genre: 'Horror', myRating: 7.5, imdbRating: 4.8 },
   { id: '215', title: 'Chelot', year: 2025, director: 'Unknown', genre: 'Action', myRating: 9.5, imdbRating: 7.9 },
-  { id: '216', title: 'The Courier', year: 2020, director: 'Dominic Cooke', genre: 'Thriller', myRating: 10.0, imdbRating: 7.2 },
+  { id: '216', title: 'The Courier', year: 2020, director: 'Dominic Cooke', genre: 'Thriller', myRating: 10.0, imdbRating: 7.2, poster: 'https://image.tmdb.org/t/p/w1280/zFIjKtZrzhmc7HecdFXXjsLR2Ig.jpg' },
   { id: '217', title: 'One Night Only', year: 2026, director: 'Will Gluck', genre: 'Comedy', myRating: 8.0, imdbRating: 6.2 },
   { id: '218', title: 'Street Fighter', year: 2026, director: 'Kitao Sakurai', genre: 'Action', myRating: 8.0, imdbRating: 6.3 },
   { id: '219', title: 'Retribution', year: 2023, director: 'Nimród Antal', genre: 'Thriller', myRating: 7.5, imdbRating: 5.4 },
