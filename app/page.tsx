@@ -142,7 +142,7 @@ export default function MovieVault() {
             <tbody>
               {processedMovies.length > 0 ? (
                 processedMovies.map((movie, index) => (
-                  <tr key={movie.id} className="border-b border-rule last:border-0 transition-colors hover:bg-white/[0.03]">
+                  <tr key={movie.id} className="border-b border-rule last:border-0 transition-colors hover:bg-ink/[0.04]">
                     <td className="max-w-[320px] px-4 py-3">
                       <div className="flex items-baseline gap-4">
                         <span className="num w-7 shrink-0 text-right text-xs text-ink-faint">{index + 1}</span>

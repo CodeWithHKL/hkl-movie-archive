@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  color-scheme: dark;
   --paper: #000000;
   --surface: #0a0a0a;
   --rule: #262626;
@@ -8,6 +9,57 @@
   --ink-soft: #a1a1a1;
   --ink-faint: #737373;
   --accent: #3291ff;
+  --genre-sci-fi: #7aa2c9;
+  --genre-crime: #c47a72;
+  --genre-thriller: #a58bc4;
+  --genre-action: #d09a62;
+  --genre-drama: #7fb095;
+  --genre-war: #c4b266;
+  --genre-romance: #c98aa5;
+  --genre-horror: #8c9099;
+  --genre-animation: #6fb3b8;
+  --genre-comedy: #d8d3c4;
+  --genre-history: #b08d5b;
+  --genre-other: #8c8a82;
+  --pick-gold: #e5b567;
+  --pick-red: #d9695f;
+  --pick-violet: #a58bc4;
+  --pick-teal: #6fb3b8;
+  --pick-pink: #c98aa5;
+  --pick-green: #7fb095;
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+  --paper: #ffffff;
+  --surface: #fafafa;
+  --rule: #e5e5e5;
+  --ink: #171717;
+  --ink-soft: #525252;
+  --ink-faint: #737373;
+  --accent: #0070f3;
+  --genre-sci-fi: #5d8ebd;
+  --genre-crime: #c2776e;
+  --genre-thriller: #9b7dbd;
+  --genre-action: #bc7c38;
+  --genre-drama: #5c9676;
+  --genre-war: #a0912f;
+  --genre-romance: #be7292;
+  --genre-horror: #878b94;
+  --genre-animation: #4c9499;
+  --genre-comedy: #8a8372;
+  --genre-history: #a68350;
+  --genre-other: #8c8a82;
+  --pick-gold: #b77d1f;
+  --pick-red: #d9695f;
+  --pick-violet: #9b7dbd;
+  --pick-teal: #4c9499;
+  --pick-pink: #be7292;
+  --pick-green: #5c9676;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -31,7 +83,7 @@ body {
 
 ::selection {
   background: var(--accent);
-  color: #000000;
+  color: var(--paper);
 }
 
 .num {
@@ -39,11 +91,15 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-select {
-  color-scheme: dark;
-}
-
 :focus-visible {
   outline: 1px solid var(--accent);
   outline-offset: 2px;
+}
+
+/* Theme switch: the new view is revealed by a clip-path circle (see ThemeToggle),
+   so turn off the default cross-fade. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }

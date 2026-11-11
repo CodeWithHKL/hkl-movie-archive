@@ -9,13 +9,13 @@ import SiteHeader from '@/components/SiteHeader';
 import { GENRE_COLORS } from '@/lib/theme';
 import { X } from 'lucide-react';
 
-const ACCENT = '#3291ff';
-const INK = '#ededed';
-const FAINT = '#737373';
-const RULE = '#262626';
+const ACCENT = 'var(--accent)';
+const INK = 'var(--ink)';
+const FAINT = 'var(--ink-faint)';
+const RULE = 'var(--rule)';
 
 const tooltipStyle = {
-  backgroundColor: '#0a0a0a',
+  backgroundColor: 'var(--surface)',
   border: `1px solid ${RULE}`,
   borderRadius: 4,
   color: INK,
@@ -116,7 +116,7 @@ export default function Dashboard() {
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
-                    data={genreData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={52} outerRadius={88} paddingAngle={1} stroke="#000000" strokeWidth={2}
+                    data={genreData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={52} outerRadius={88} paddingAngle={1} stroke="var(--paper)" strokeWidth={2}
                     onClick={(data: any) => {
                       const name = data?.name;
                       if (name) setSelectedGenre(selectedGenre === name ? null : name);
@@ -135,7 +135,7 @@ export default function Dashboard() {
                   >
                     {genreData.map((entry, i) => (
                       <Cell
-                        key={i} fill={GENRE_COLORS[entry.name] || '#8c8a82'}
+                        key={i} fill={GENRE_COLORS[entry.name] || 'var(--genre-other)'}
                         fillOpacity={selectedGenre ? (selectedGenre === entry.name ? 1 : 0.15) : 1}
                       />
                     ))}
@@ -242,7 +242,7 @@ export default function Dashboard() {
                   />
                   <Scatter name="Movies" data={scatterData}>
                     {scatterData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={GENRE_COLORS[entry.genre] || '#8c8a82'} fillOpacity={0.9} stroke="#000000" strokeWidth={1} />
+                      <Cell key={`cell-${index}`} fill={GENRE_COLORS[entry.genre] || 'var(--genre-other)'} fillOpacity={0.9} stroke="var(--paper)" strokeWidth={1} />
                     ))}
                   </Scatter>
                 </ScatterChart>

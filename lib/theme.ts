@@ -1,19 +1,20 @@
-// Muted, desaturated genre palette shared by the table and charts.
+// Muted genre palette shared by the table and charts. Values are CSS variables
+// (defined per theme in globals.css) so light mode gets darker, higher-contrast tones.
 export const GENRE_COLORS: Record<string, string> = {
-  'Sci-Fi': '#7aa2c9',
-  'Crime': '#c47a72',
-  'Thriller': '#a58bc4',
-  'Action': '#d09a62',
-  'Drama': '#7fb095',
-  'War': '#c4b266',
-  'Romance': '#c98aa5',
-  'Horror': '#8c9099',
-  'Animation': '#6fb3b8',
-  'Comedy': '#d8d3c4',
-  'History': '#b08d5b',
+  'Sci-Fi': 'var(--genre-sci-fi)',
+  'Crime': 'var(--genre-crime)',
+  'Thriller': 'var(--genre-thriller)',
+  'Action': 'var(--genre-action)',
+  'Drama': 'var(--genre-drama)',
+  'War': 'var(--genre-war)',
+  'Romance': 'var(--genre-romance)',
+  'Horror': 'var(--genre-horror)',
+  'Animation': 'var(--genre-animation)',
+  'Comedy': 'var(--genre-comedy)',
+  'History': 'var(--genre-history)',
 };
 
-export const genreColor = (genre: string) => GENRE_COLORS[genre] ?? '#8c8a82';
+export const genreColor = (genre: string) => GENRE_COLORS[genre] ?? 'var(--genre-other)';
 
 // Ratings read as plain numerals; only the top tier gets the accent.
 export const ratingClass = (rating: number) =>
