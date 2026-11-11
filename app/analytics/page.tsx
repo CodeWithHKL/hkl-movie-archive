@@ -93,7 +93,7 @@ export default function Dashboard() {
         <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <h1 className="text-4xl font-semibold tracking-tighter md:text-5xl">
-              The <span className="text-ink-faint">Numbers</span>
+              Analytics
             </h1>
             <p className="mt-3 text-ink-soft">
               <span className="num text-ink">{filteredMovies.length}</span> titles in view. Click a slice or bar to filter.

@@ -5,7 +5,7 @@ import { ArrowUpRight } from 'lucide-react';
 
 const LINKS = [
   { href: '/', label: 'Archive' },
-  { href: '/dashboard', label: 'Analytics' },
+  { href: '/analytics', label: 'Analytics' },
   { href: '/bestpicks', label: 'Best Picks' },
 ];
 

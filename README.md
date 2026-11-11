@@ -9,7 +9,7 @@ Built with Next.js (App Router), React, Tailwind CSS v4, Recharts and Lucide ico
 | Route | Description |
 | --- | --- |
 | `/` | Searchable, sortable table of every title. Filter by genre, era, my rating and IMDb rating. |
-| `/dashboard` | Analytics: genre distribution, era breakdown, rating trends and my rating vs IMDb. Click a chart to filter the others. |
+| `/analytics` | Analytics: genre distribution, era breakdown, rating trends and my rating vs IMDb. Click a chart to filter the others. |
 | `/bestpicks` | Poster collections such as All-Time Favorites, Visual Elite and Underrated. |
 
 ## Getting started
@@ -31,7 +31,7 @@ npm run start   # serve the production build
 ```
 app/
   page.tsx            Archive table
-  dashboard/page.tsx  Analytics charts
+  analytics/page.tsx  Analytics charts
   bestpicks/page.tsx  Best picks collections
   layout.tsx          Fonts and metadata
   globals.css         Design tokens (colors, base styles)
